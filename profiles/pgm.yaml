@@ -18,6 +18,8 @@ confluence_spaces:
   - Networking
   - Program Management
 digest:
+  enabled: false
+  lookback_hours: 24
   workstreams:
     - Program Milestones
     - Cross-Team Dependencies

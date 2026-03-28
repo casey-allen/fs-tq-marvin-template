@@ -14,6 +14,22 @@ Run `date +%Y-%m-%d` and `date +%A` to get today's date and day of week. Store a
 ### 2. Load Configuration
 Read `config.yaml` to get Obsidian vault path, Jira projects, and other settings.
 
+### 2.5. Check Obsidian Vault
+
+Check if `obsidian_vault` in `config.yaml` is set and the path exists:
+
+**If empty or missing:**
+> "Your Obsidian vault isn't configured yet. The daily workflow needs it for priorities, goals, and notes. Run `/guide obsidian` to set it up — takes about 15-20 minutes."
+>
+> "Want to set it up now, or continue with a limited briefing?"
+
+If they want to continue without it, skip Steps 3-4 (Obsidian-dependent) and present a basic briefing from session logs only.
+
+**If path doesn't exist:**
+> "Your Obsidian vault path ({path}) doesn't seem to exist. Did it move? Update the `obsidian_vault` path in `config.yaml`, or run `/guide obsidian` to set up a new one."
+
+**If valid:** Continue normally.
+
 ### 3. Load Context from Obsidian
 
 Read these files from the Obsidian vault (paths from config.yaml):

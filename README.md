@@ -1,45 +1,55 @@
-# MARVIN - Your AI Chief of Staff
+# MARVIN - AI Chief of Staff for Infrastructure Engineers
 
 **MARVIN** = Manages Appointments, Reads Various Important Notifications
 
-An AI assistant that remembers your conversations, tracks your goals, and helps you stay organized. Like having a personal chief of staff who never forgets anything.
+An AI Chief of Staff built on Claude Code for the Fluidstack Infrastructure org. MARVIN integrates with Jira, Slack, Confluence, GitHub, Google Calendar, and Obsidian to give you a daily operating rhythm: morning briefings, task tracking, team digests, and weekly reviews.
 
-## Why MARVIN?
+No coding experience required — MARVIN walks you through setup interactively.
 
-MARVIN extends Claude Code with capabilities designed for getting things done:
+## Who is this for?
 
-- **Session continuity** - Pick up where you left off, even days later. Every conversation builds on the last.
-- **Goal tracking** - Set work and personal goals, MARVIN monitors progress and nudges you forward.
-- **Tool integrations** - Connect to Google Workspace, Microsoft 365, Atlassian, Slack, Linear, Notion, Telegram, and more.
-- **Extensibility** - Add commands, agents, and skills tailored to your workflow. Create new capabilities with simple markdown files.
-- **Thought partner** - MARVIN pushes back on weak ideas, asks probing questions, and helps you think through decisions. Not just a yes-man.
+Anyone in the Infrastructure org:
+- **Network Engineers** — track deployments, circuit turn-ups, operations, and automation work
+- **Program Managers** — cross-team dependencies, delivery tracking, risk management
+- **ICT Architects** — design reviews, standards compliance, technology evaluation
 
-## Quick Start with Claude Code
+Setup includes role-based defaults that pre-configure your Jira projects, Slack channels, and workstreams.
 
-1. Clone this repository:
-   ```bash
-   git clone git@github.com:fluidstackio/fs-tq-marvin-template.git
-   cd fs-tq-marvin-template
-   ```
+## Quick Start
 
-2. Open in Claude Code:
-   ```bash
-   claude
-   ```
+```bash
+# Clone the template
+git clone git@github.com:fluidstackio/fs-tq-marvin-template.git
+cd fs-tq-marvin-template
 
-3. Ask MARVIN to help you set up:
-   > "Help me set up MARVIN"
+# Run interactive setup
+./.marvin/setup.sh
+```
 
-That's it. MARVIN walks you through the rest: your profile, goals, workspace location, and optional integrations.
+Setup takes about 5 minutes and creates a personal workspace with your profile, config, and shell aliases.
 
+Then open a new terminal and type `marvin` to start. Inside MARVIN, type `/guide` to walk through additional setup.
 
 ## What You Get
 
 ### Daily Workflow
 
-Start your day with `/start` for a briefing: priorities, deadlines, progress toward goals. Work naturally throughout the day, MARVIN remembers everything. End with `/end` to save context for next time.
+Start your day with `/start` for a briefing: priorities, Jira status, blockers, and carry-forward items from your Obsidian notes. Work naturally throughout the day — capture tasks, delegations, and notes. End with `/end` to save everything.
 
-Between sessions, `/update` saves progress without ending. `/sync` pulls new features from this template into your workspace.
+### Interactive Guides
+
+MARVIN includes 6 setup guides that walk you through capabilities step by step:
+
+| Guide | What It Covers |
+|-------|---------------|
+| [Getting Started](guides/01-getting-started.md) | Install Claude Code, clone template, run setup |
+| [Skills & MCP](guides/02-skills-and-mcp.md) | Codex marketplace, company skills (NRFC writer, etc.) |
+| [Obsidian Vault](guides/03-obsidian-vault.md) | Git-tracked second brain with daily notes and task tracking |
+| [Team Digest](guides/04-team-digest.md) | Daily Jira/Slack/GitHub synthesis posted to your team's Slack |
+| [Weekly Review](guides/05-weekly-review.md) | Weekly planning with Obsidian notes + Jira project pulse |
+| [Keeping Updated](guides/06-keeping-updated.md) | /sync, marketplace updates, blueprint regeneration |
+
+Run `/guide` inside MARVIN to start any guide interactively.
 
 ### Commands
 
@@ -48,81 +58,77 @@ Between sessions, `/update` saves progress without ending. `/sync` pulls new fea
 | `/start` | Start your day with a briefing |
 | `/end` | End session and save everything |
 | `/update` | Quick checkpoint (save progress) |
+| `/guide` | Interactive setup walkthroughs |
+| `/skills` | Manage Codex plugins and workspace skills |
 | `/report` | Generate a weekly summary |
 | `/commit` | Review and commit git changes |
-| `/status` | Check integration & workspace health |
+| `/status` | Check integration and workspace health |
 | `/sync` | Get updates from the template |
 | `/help` | Show all commands and integrations |
 
 ### Integrations
 
-MARVIN connects to tools you already use:
-
 | Integration | What It Provides |
 |-------------|------------------|
+| [Atlassian](.marvin/integrations/atlassian/) | Jira, Confluence |
 | [Google Workspace](.marvin/integrations/google-workspace/) | Gmail, Calendar, Drive |
 | [Microsoft 365](.marvin/integrations/ms365/) | Outlook, Calendar, OneDrive, Teams |
-| [Atlassian](.marvin/integrations/atlassian/) | Jira, Confluence |
 | [Slack](.marvin/integrations/slack/) | Channel monitoring, posting |
-| [Linear](.marvin/integrations/linear/) | Issue tracking |
-| [Notion](.marvin/integrations/notion/) | Page reading, database queries |
-| [Telegram](.marvin/integrations/telegram/) | Chat with MARVIN from your phone |
-| [Parallel Search](.marvin/integrations/parallel-search/) | Web search capabilities |
+| [Parallel Search](.marvin/integrations/parallel-search/) | Web search |
 
-Each integration includes setup instructions in its directory.
-
-### Skills and Agents
-
-MARVIN uses a `.claude/` directory structure for extensibility:
-
-- **Commands** (`.claude/commands/`) - User-triggered workflows you invoke with slash commands
-- **Agents** (`.claude/agents/`) - Specialized subagents MARVIN spawns for delegated work
-- **Skills** (`.claude/skills/`) - Reusable capabilities Claude Code invokes contextually
-
-Templates are included for each type. Just say "create a skill for X" and MARVIN generates the file.
+Integrations are configured during onboarding. Type `/status` to check health.
 
 ## How It Works
 
 MARVIN separates your workspace from the template:
 
 ```
-~/marvin/                    Your workspace (your data lives here)
-├── CLAUDE.md               Your profile and preferences
-├── state/                  Your goals and priorities
-├── sessions/               Your daily session logs
-└── ...
+~/marvin/                         Your workspace (your data)
+├── CLAUDE.md                     Your profile and preferences
+├── config.yaml                   Jira projects, Slack channels, vault path
+├── skills/                       Your personalized skills (team-digest, weekly-review)
+├── sessions/                     Daily session logs
+└── reports/                      Weekly reports
 
-~/fs-tq-marvin-template/    Template (get updates here)
-├── .marvin/                Setup scripts and integrations
-├── .claude/                Command and agent templates
-└── ...
+~/git/fs-tq-marvin-template/      Template (get updates here)
+├── guides/                       Setup walkthroughs
+├── skill-blueprints/             Skill templates with config placeholders
+├── profiles/                     Role-based config presets
+└── .marvin/                      Setup scripts and integrations
+
+Obsidian vault (your second brain)
+├── Daily/                        Daily notes with task tags
+├── Weekly/                       Weekly review summaries
+├── Permanent/                    Priorities and goals
+└── People/                       Per-person tracking
 ```
 
-Your workspace holds all personal data. The template provides updates. Run `/sync` from your workspace to pull new features without overwriting your data.
+State (priorities, goals, daily notes) lives in your Obsidian vault. The workspace holds session logs and skills. The template provides updates via `/sync`.
 
-## Migrating from Older Versions
+## Codex Skills
 
-If you were using MARVIN before the workspace separation:
+Company-wide skills like the NRFC writer come from the [Codex](https://github.com/fluidstackio/codex) marketplace:
 
 ```bash
-cd fs-tq-marvin-template
-./.marvin/migrate.sh
+claude plugin marketplace add fluidstackio/codex
+claude plugin install codex-document-skills
 ```
 
-The script copies your profile, goals, sessions, reports, and custom skills to a new workspace. Nothing is deleted from your old installation. Verify the new workspace works, then clean up the old one.
+See [Guide 02](guides/02-skills-and-mcp.md) for details.
 
 ## Contributing
 
-MARVIN welcomes contributions in three areas:
+1. **Guides** — Improve walkthroughs or add new ones in `guides/`
+2. **Skill blueprints** — Add or improve templates in `skill-blueprints/`
+3. **Integrations** — See [.marvin/integrations/CLAUDE.md](.marvin/integrations/CLAUDE.md)
+4. **Bug fixes** — Submit a PR
 
-1. **Integrations** - Add support for new tools. See [.marvin/integrations/CLAUDE.md](.marvin/integrations/CLAUDE.md) for patterns and security requirements.
-2. **Commands, agents, skills** - Extend MARVIN's capabilities. Templates are in `.claude/commands/`, `.claude/agents/`, and `.claude/skills/`.
-3. **Bug fixes** - Found an issue? Submit a PR with the fix and a test case.
+## Resources
 
-Fork the repo, create a branch, and submit a PR. All contributions are reviewed.
+- [Confluence: MARVIN Guide](https://fluidstack.atlassian.net/wiki/spaces/Networking/pages/531988569)
+- [Codex Skills Repo](https://github.com/fluidstackio/codex)
+- [Claude Code Docs](https://docs.anthropic.com/en/docs/claude-code)
 
-## About
-
-MARVIN is named after the Paranoid Android from The Hitchhiker's Guide to the Galaxy.
+---
 
 Originally created by [Sterling Chin](https://sterlingchin.com). Adapted for Fluidstack Infrastructure org.

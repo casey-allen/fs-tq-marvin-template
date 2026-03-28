@@ -299,23 +299,35 @@ Now update the files **in the new workspace** with their info:
 **Communication Style:** {Their preference - Professional/Casual/Sarcastic}
 ```
 
-### Step 5.5: Discover Setup Guides
+### Step 5.5: Set Up Your Second Brain (Required)
 
-Tell them about the guides:
+Tell them about Obsidian and why it's needed:
 
-> "Before we continue, I want to let you know about something cool. I have interactive setup guides that help you get the most out of me:
+> "One important thing before we go further. MARVIN uses an Obsidian vault as your 'second brain' — this is where your priorities, goals, daily notes, and task tracking live. It's required for the daily workflow (/start, /update, /end) to work properly."
+>
+> "Setting it up takes about 15-20 minutes. We can do it now, or you can do it later with /guide obsidian — but you'll need it before your first /start briefing."
+>
+> "Want to set it up now?"
+
+**If yes:** Run `/guide obsidian` and walk them through the full vault setup. When complete, continue to Step 6.
+
+**If not now:**
+> "No problem! Just remember to run /guide obsidian before your first /start session. I'll remind you if you forget."
+
+Continue to Step 5.6.
+
+### Step 5.6: Optional Setup Guides
+
+Tell them about the remaining guides:
+
+> "There are a few more optional setup guides you can run anytime:
 >
 > 1. **Skills & MCP** — Install company-wide skills like the NRFC writer
-> 2. **Obsidian Vault** — Set up a git-tracked second brain for daily notes and task tracking
-> 3. **Team Digest** — Create a daily digest of your team's Jira, Slack, and GitHub activity
-> 4. **Weekly Review** — Automate your weekly planning with notes + Jira integration
-> 5. **Keeping Updated** — How to stay current as new features ship
+> 2. **Team Digest** — Create a daily digest of your team's Jira/Slack/GitHub activity
+> 3. **Weekly Review** — Automate weekly planning with your Obsidian notes + Jira
+> 4. **Keeping Updated** — How to stay current as new features ship
 >
-> You can run these anytime by typing `/guide` inside MARVIN. Each one walks you through setup step by step — no coding experience needed.
->
-> Want to try one now, or finish the basic setup first?"
-
-If they want to try one now, run `/guide` and let them pick. Otherwise, continue to Step 6.
+> Run /guide anytime to see the full list and walk through any of them."
 
 ### Step 6: Quick Launch Shortcut (Optional)
 

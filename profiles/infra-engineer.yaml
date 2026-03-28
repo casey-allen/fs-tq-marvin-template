@@ -18,6 +18,8 @@ github_repos:
 confluence_spaces:
   - Networking
 digest:
+  enabled: false
+  lookback_hours: 24
   workstreams:
     - Engineering Core
     - Deployment & Integration

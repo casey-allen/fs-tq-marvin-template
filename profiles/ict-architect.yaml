@@ -15,6 +15,8 @@ confluence_spaces:
   - Networking
   - Architecture
 digest:
+  enabled: false
+  lookback_hours: 24
   workstreams:
     - Architecture & Design
     - Standards & Compliance

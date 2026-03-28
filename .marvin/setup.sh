@@ -281,113 +281,18 @@ print_color "$GREEN" "Workspace created at: $WORKSPACE_DIR"
 
 print_header "Phase 5: Personalizing Your MARVIN"
 
-# Build employer line if provided
-EMPLOYER_LINE=""
-if [[ -n "$USER_EMPLOYER" ]]; then
-    EMPLOYER_LINE="${USER_ROLE} at ${USER_EMPLOYER}"
-else
-    EMPLOYER_LINE="${USER_ROLE}"
-fi
+# Personalize CLAUDE.md (already copied from template in Phase 4)
+echo "Personalizing CLAUDE.md..."
+TIMEZONE=$(python3 -c "import datetime; print(datetime.datetime.now().astimezone().tzname())" 2>/dev/null || echo "UTC")
 
-# Generate CLAUDE.md in workspace
-cat > "$WORKSPACE_DIR/CLAUDE.md" << CLAUDE_EOF
-# MARVIN - AI Chief of Staff
+sed -i '' "s/\[Your name\]/${USER_NAME}/g" "$WORKSPACE_DIR/CLAUDE.md"
+sed -i '' "s/\[Your role\/title\]/${USER_ROLE}/g" "$WORKSPACE_DIR/CLAUDE.md"
+sed -i '' "s/\[Your company\/org\]/${USER_EMPLOYER:-Fluidstack}/g" "$WORKSPACE_DIR/CLAUDE.md"
+sed -i '' "s/\[Your timezone\]/${TIMEZONE}/g" "$WORKSPACE_DIR/CLAUDE.md"
+sed -i '' "s/\[Direct \/ Detailed \/ Casual \/ Formal\]/${PERSONALITY}/g" "$WORKSPACE_DIR/CLAUDE.md"
+sed -i '' "s/\*\*Current style:\*\* Default/**Current style:** ${PERSONALITY^}/g" "$WORKSPACE_DIR/CLAUDE.md"
 
-**MARVIN** = Manages Appointments, Reads Various Important Notifications
-
-This document is the primary context for Claude Code operating as MARVIN.
-
----
-
-## Part 1: Who You Are
-
-**Name:** ${USER_NAME}
-**Role:** ${EMPLOYER_LINE}
-
-### Goals
-$(echo -e "$GOALS")
-
----
-
-## Part 2: How MARVIN Behaves
-
-### Core Principles
-1. **Proactive by default** - Surface what you need to know before you ask
-2. **Maintain continuity** - Remember context across sessions
-3. **Track progress** - Monitor goals and priorities
-4. **Save before compact** - When context is running low, suggest running \`/end\` to save
-
-### Personality
-${PERSONALITY_DESC}
-
-### Writing Style
-- No em dashes in drafted content. Use commas, periods, colons, or "and" instead of "-"
-- Keep tone ${PERSONALITY}
-- Be direct, avoid filler phrases
-
----
-
-## Part 3: System Architecture
-
-### Directory Structure
-\`\`\`
-marvin/
-├── CLAUDE.md              # This file (read on startup)
-├── config.yaml            # Your personalized settings
-├── .claude/               # MARVIN capabilities
-│   ├── commands/          # Slash commands (user-triggered)
-│   ├── agents/            # Subagent definitions (delegated work)
-│   └── skills/            # Reusable skills (contextual invocation)
-├── skills/                # Your personalized skills (team-digest, weekly-review)
-├── sessions/              # Daily session logs
-│   └── YYYY-MM-DD.md
-└── reports/               # Weekly reports
-\`\`\`
-
-State (priorities, goals) lives in your Obsidian vault once configured via \`/guide obsidian\`.
-
-### Session Continuity
-
-**On startup (\`/start\`):**
-1. Get current date: \`date +%Y-%m-%d\`
-2. Read \`CLAUDE.md\`, \`config.yaml\`
-3. Read priorities and goals from Obsidian vault
-4. Read today's daily note + recent session logs
-5. Present briefing
-
-**On checkpoint (\`/update\`):**
-1. Append to session log and Obsidian daily note
-2. Update priorities only if something changed
-3. Minimal output, no ceremony
-
-**On close (\`/end\`):**
-1. Full summary with topics, decisions, open threads
-2. Update session log, Obsidian daily note, and priorities
-
-### Slash Commands
-
-| Command | Description |
-|---------|-------------|
-| \`/start\` | Start session with briefing |
-| \`/update\` | Quick checkpoint |
-| \`/end\` | End session, save context |
-| \`/commit\` | Review changes and create git commits |
-
----
-
-## Part 4: Evolution
-
-This system is designed to evolve. As you use MARVIN:
-- Update this file when processes change
-- Add new sections for new workflows
-- MARVIN adapts on next session
-
----
-
-*Last updated: $(date +%Y-%m-%d)*
-CLAUDE_EOF
-
-print_color "$GREEN" "Created: CLAUDE.md"
+print_color "$GREEN" "Personalized: CLAUDE.md"
 
 # Generate config.yaml from profile
 echo "Generating config.yaml..."
@@ -404,6 +309,7 @@ name: ${USER_NAME}
 role: ${PROFILE_ROLE}
 company: ${USER_EMPLOYER:-Fluidstack}
 timezone: $(python3 -c "import datetime; print(datetime.datetime.now().astimezone().tzname())" 2>/dev/null || echo "UTC")
+jira_base_url: https://fluidstack.atlassian.net/browse
 
 CONFIG_EOF
 
@@ -415,7 +321,6 @@ else
     # Generic defaults for custom role
     cat >> "$WORKSPACE_DIR/config.yaml" << CONFIG_CUSTOM_EOF
 # --- Jira ---
-jira_base_url: https://fluidstack.atlassian.net/browse
 jira_projects: []
 
 # --- Slack ---
@@ -431,10 +336,12 @@ confluence_spaces: []
 # --- Team Digest ---
 digest:
   workstreams: []
+  enabled: false
+  lookback_hours: 24
 CONFIG_CUSTOM_EOF
 fi
 
-# Append common config sections
+# Append common config sections (keys NOT already set by profile/custom block)
 cat >> "$WORKSPACE_DIR/config.yaml" << CONFIG_COMMON_EOF
 
 # --- Obsidian ---
@@ -443,14 +350,6 @@ daily_notes_dir: Daily/
 weekly_notes_dir: Weekly/
 templates_dir: Templates/
 people_dir: People/
-
-# --- Jira Base URL ---
-jira_base_url: https://fluidstack.atlassian.net/browse
-
-# --- Team Digest ---
-digest:
-  enabled: false
-  lookback_hours: 24
 
 # --- Weekly Review ---
 weekly_review:
