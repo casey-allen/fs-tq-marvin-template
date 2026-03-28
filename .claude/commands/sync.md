@@ -4,95 +4,107 @@ description: Sync updates from the MARVIN template
 
 # /sync - Get Updates
 
-Pull new features and commands from the MARVIN template into your workspace.
+Pull new features and commands from the upstream MARVIN template into your workspace.
 
 ## Instructions
 
-### 1. Find the Template
+### 1. Check Upstream Remote
 
-Read `.marvin-source` to get the path to the template directory:
+Verify the `upstream` remote exists:
 ```bash
-cat .marvin-source
+git remote get-url upstream
 ```
 
-If this file doesn't exist, tell the user:
-> "I can't find your template source. This usually means you set up MARVIN manually. Would you like to tell me where your template folder is?"
+If this fails, add it:
+```bash
+git remote add upstream git@github.com:fluidstackio/fs-tq-marvin-template.git
+```
 
-### 2. Check What's New
+### 2. Fetch Updates
 
-Compare the template's files with the user's workspace:
+```bash
+git fetch upstream
+```
 
-**Files to sync:**
-- `.claude/commands/` - Slash commands
-- `.claude/agents/` - Subagent definitions
-- `.claude/skills/` - Reusable skills
+### 3. Show What's Changed
 
-**Files to NEVER sync (user's data):**
-- `config.yaml` - User's personalized settings
-- `sessions/` - Session logs
-- `reports/` - Weekly reports
-- `skills/` - User's generated skills
-- `CLAUDE.md` - User's profile
-- `.env` - User's secrets
+Compare the current branch with upstream:
+```bash
+git log HEAD..upstream/main --oneline
+```
 
-### 3. Identify Changes
+If there are no new commits, tell the user:
+> "You're already up to date! No new changes in the template."
 
-For each file in the template's `.claude/commands/`, `.claude/agents/`, and `.claude/skills/`:
-- If it doesn't exist in the workspace: NEW
-- If it exists but differs: CONFLICT (user's version wins)
-- If it's identical: UNCHANGED
-
-### 4. Show What's Available
+If there are new commits, show a summary:
+```bash
+git diff --stat HEAD..upstream/main
+```
 
 Display something like:
 
 ```
 ## Updates Available
 
-**New commands:**
-- /newcommand - Description
+**New/changed files:**
+- .claude/commands/newcommand.md (new)
+- .claude/skills/existing-skill.md (updated)
+- skill-blueprints/team-digest/SKILL.md (updated)
 
-**New skills:**
-- new-skill/ - Description
-
-**Conflicts (your version kept):**
-- /existingcommand - Template has updates, but keeping yours
-
-No changes to your data (goals, sessions, etc.) - those are always safe.
+Your personal files (config.yaml, CLAUDE.md, sessions/, etc.) won't be overwritten
+unless there's a merge conflict — and you always get to resolve those.
 ```
 
-### 5. Apply Updates
+### 4. Merge Updates
 
-Ask: "Would you like me to add the new commands/agents/skills?"
+Ask: "Would you like me to pull these updates in?"
 
-If yes, copy the NEW files only. Never overwrite existing files.
-
+If yes:
 ```bash
-# Example for a new command
-cp {template}/.claude/commands/newcommand.md .claude/commands/
+git merge upstream/main
 ```
 
-### 6. Handle Conflicts
+### 5. Handle Merge Conflicts
 
-If there are conflicts, explain:
-> "I found some commands that exist in both places. I kept your versions since you may have customized them. If you want the template version instead, let me know which ones and I'll update them."
+If there are merge conflicts:
 
-### 7. Check Blueprint Updates
+**For personal files** (`config.yaml`, `CLAUDE.md`):
+> "There's a conflict in {file}. Since this is your personal file, I'll keep your version."
 
-Compare `skill-blueprints/` in the template with the user's workspace `skills/`:
+Resolve by keeping the user's version:
+```bash
+git checkout --ours {file}
+git add {file}
+```
 
-For each blueprint directory (e.g., `skill-blueprints/team-digest/`):
-- Check if the user has a corresponding skill (e.g., `skills/team-digest/`)
-- If they do, compare the blueprint SKILL.md with the user's SKILL.md
-- If the blueprint is newer or different:
+**For template files** (`.claude/commands/`, `.claude/skills/`, etc.):
+> "There's a conflict in {file}. The template has updates, but you've also customized this file. Want to keep yours, take the template version, or let me show you both so you can decide?"
+
+Resolve based on user's choice.
+
+After resolving all conflicts:
+```bash
+git commit -m "Merge upstream template updates"
+```
+
+### 6. Check Blueprint Updates
+
+After merging, check if any skill blueprints changed:
+```bash
+git diff HEAD~1..HEAD --name-only -- skill-blueprints/
+```
+
+For each changed blueprint directory (e.g., `skill-blueprints/team-digest/`):
+- Check if the user has a corresponding generated skill (e.g., `skills/team-digest/`)
+- If they do:
   - Show what changed (brief summary)
   - Offer to regenerate: "The team-digest blueprint has been updated. Want me to regenerate your skill with the latest logic? Your config.yaml settings will be preserved."
   - If yes: Read `config.yaml`, regenerate the skill from the blueprint with config values substituted, show the diff, and write
   - If no: Note that their version is now custom
 
-### 8. Check for New Guides
+### 7. Check for New Guides
 
-Read `config.yaml` for `guides_completed` list. Check `{template}/guides/` for guide files.
+Read `config.yaml` for `guides_completed` list. Check `guides/` for guide files.
 
 If there are guides not in `guides_completed`:
 > "New guides available:
@@ -100,7 +112,7 @@ If there are guides not in `guides_completed`:
 >
 > Run `/guide {slug}` to walk through any of them."
 
-### 9. Finish
+### 8. Finish
 
 After syncing:
 > "All done! You now have the latest MARVIN features. Type `/help` to see what's available."

@@ -250,17 +250,22 @@ MARVIN can monitor your calendar for patterns. Add detection rules here:
 
 ## Your Workspace
 
+Everything lives in one repo (your fork of the MARVIN template):
+
 ```
-marvin/
-├── CLAUDE.md              # This file
+fs-tq-marvin-template/
+├── CLAUDE.md              # This file (personalized during setup)
 ├── config.yaml            # Your personalized settings (Jira, Slack, vault, etc.)
-├── .marvin-source         # Points to template for updates
 ├── .env                   # Your secrets (not in git)
 ├── skills/                # Your personalized skills
 │   ├── team-digest/       # Daily team digest (generated from blueprint)
 │   └── weekly-review/     # Weekly review (generated from blueprint)
 ├── sessions/              # Daily session logs (conversation-specific)
 ├── reports/               # Weekly reports (from /report)
+├── guides/                # Setup walkthroughs (read by /guide)
+├── skill-blueprints/      # Skill templates with config placeholders
+├── profiles/              # Role-based config presets
+├── .marvin/               # Setup scripts and integrations
 └── .claude/               # MARVIN capabilities
     ├── commands/          # Slash commands (user-triggered)
     │   └── guide.md       # /guide - interactive setup walkthroughs
@@ -279,18 +284,9 @@ Obsidian vault (configured in config.yaml):
 └── Fleeting/              # Quick captures
 ```
 
-**In the template repo** (referenced by `.marvin-source`):
-```
-fs-tq-marvin-template/
-├── guides/                # Setup walkthroughs (read by /guide)
-├── skill-blueprints/      # Skill templates with config placeholders
-├── profiles/              # Role-based config presets
-└── .marvin/               # Setup scripts and integrations
-```
-
 Your workspace is yours. Add folders, files, projects, whatever you need.
 
-**Note:** The setup scripts and integrations live in the template folder (the one you originally downloaded). Run `/sync` to pull updates from there.
+**Updates:** Run `/sync` to pull new features from the upstream template repo via git.
 
 ---
 
@@ -317,7 +313,7 @@ I'll configure the integration directly and walk you through authentication usin
 | Notion | Pages, databases, wikis |
 | Linear | Issues, projects, tracking |
 
-**Manual setup (advanced):** Setup scripts are available in the template folder for users who prefer terminal setup. Check `.marvin-source` for the template path.
+**Manual setup (advanced):** Setup scripts are available in the `.marvin/` directory for users who prefer terminal setup.
 
 **Building a new integration?** See `.marvin/integrations/CLAUDE.md` for required patterns and `.marvin/integrations/README.md` for full documentation.
 

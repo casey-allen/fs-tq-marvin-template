@@ -62,7 +62,7 @@ How many items should appear in your focus block? Default: **8**. More than 8 an
 
 ## Step 3: Generate the Skill
 
-MARVIN reads the weekly-review blueprint, substitutes your config values, and writes:
+MARVIN reads the weekly-review blueprint, substitutes your config values, and generates:
 
 - `skills/weekly-review/SKILL.md` — The main skill file
 - `.claude/commands/weekly-review.md` — The `/weekly-review` slash command

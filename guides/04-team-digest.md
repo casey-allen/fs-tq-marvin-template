@@ -63,7 +63,7 @@ How is your team's work organized? The digest groups updates by workstream. Your
 
 ## Step 2: Generate the Skill
 
-MARVIN reads the skill blueprint from the template, substitutes your configuration values, and writes the personalized skill to your workspace:
+MARVIN reads the skill blueprint, substitutes your configuration values, and writes the personalized skill:
 
 - `skills/team-digest/SKILL.md` — The main skill file
 - `skills/team-digest/prompts/system_prompt.md` — TPM methodology and analysis rules

@@ -80,17 +80,15 @@ Integrations are configured during onboarding. Type `/status` to check health.
 
 ## How It Works
 
-MARVIN separates your workspace from the template:
+Fork the template, personalize it, and work directly in your fork:
 
 ```
-~/marvin/                         Your workspace (your data)
+fs-tq-marvin-template/            Your fork (everything in one repo)
 ├── CLAUDE.md                     Your profile and preferences
 ├── config.yaml                   Jira projects, Slack channels, vault path
 ├── skills/                       Your personalized skills (team-digest, weekly-review)
 ├── sessions/                     Daily session logs
-└── reports/                      Weekly reports
-
-~/git/fs-tq-marvin-template/      Template (get updates here)
+├── reports/                      Weekly reports
 ├── guides/                       Setup walkthroughs
 ├── skill-blueprints/             Skill templates with config placeholders
 ├── profiles/                     Role-based config presets
@@ -103,7 +101,7 @@ Obsidian vault (your second brain)
 └── People/                       Per-person tracking
 ```
 
-State (priorities, goals, daily notes) lives in your Obsidian vault. The workspace holds session logs and skills. The template provides updates via `/sync`.
+State (priorities, goals, daily notes) lives in your Obsidian vault. Pull template updates via `/sync` (which merges from the upstream repo).
 
 ## Codex Skills
 

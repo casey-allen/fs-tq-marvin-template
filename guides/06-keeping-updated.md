@@ -24,7 +24,7 @@ How to keep three things up to date:
 
 ## 1. MARVIN Template Updates (`/sync`)
 
-The MARVIN template (`fs-tq-marvin-template`) gets updated with new features, commands, and guides. To pull updates into your workspace:
+The MARVIN template (`fs-tq-marvin-template`) gets updated with new features, commands, and guides. To pull updates into your fork:
 
 Inside MARVIN:
 ```
@@ -32,22 +32,17 @@ Inside MARVIN:
 ```
 
 **What `/sync` does:**
-- Checks the template repo for new or updated files
-- Copies NEW commands and skills to your workspace
+- Fetches the latest from the upstream template repo (`git fetch upstream`)
+- Merges new commits into your local branch (`git merge upstream/main`)
 - Shows you what changed
-- **Never overwrites your personal files** — your `config.yaml`, state, sessions, and CLAUDE.md are always safe
+- **Your personal files are safe** — `config.yaml`, `CLAUDE.md`, `sessions/`, etc. won't be overwritten unless there's a merge conflict, and you always get to resolve those
 
-**What `/sync` does NOT do:**
-- It does NOT auto-update your git clone of the template. You need to pull the latest first:
-
+**You can also do it manually:**
 ```bash
-cd ~/git/fs-tq-marvin-template  # or wherever you cloned it
-git pull
+git pull upstream main
 ```
 
-Then run `/sync` inside MARVIN to copy new files to your workspace.
-
-**How often:** Pull and sync weekly, or when you hear about new features. MARVIN will mention available updates when it detects them.
+**How often:** Weekly, or when you hear about new features. MARVIN will mention available updates when it detects them.
 
 ## 2. Codex Plugin Updates
 
@@ -75,7 +70,7 @@ If you accept:
 - MARVIN reads your `config.yaml` for your personal settings
 - Regenerates the skill from the updated blueprint
 - Shows you a diff of what changed
-- Writes the updated skill to your workspace
+- Writes the updated skill files
 
 If you decline:
 - Your current skill stays as-is
@@ -104,15 +99,17 @@ Want a new capability? You have several options:
 
 | What | How | How Often |
 |------|-----|-----------|
-| Template updates | `git pull` then `/sync` | Weekly |
+| Template updates | `/sync` (or `git pull upstream main`) | Weekly |
 | Codex plugins | `claude plugin marketplace update` | Monthly |
 | Blueprint regeneration | MARVIN offers during `/sync` | When blueprints change |
 | Manual skill edits | Edit files in `skills/` | Anytime |
 
 ## Troubleshooting
 
-**"/sync says no template found"** — Check that `.marvin-source` exists in your workspace and points to the template directory. Run `cat .marvin-source` to verify.
+**"/sync says no upstream remote"** — Add the upstream remote: `git remote add upstream git@github.com:fluidstackio/fs-tq-marvin-template.git`
+
+**Merge conflicts during /sync** — MARVIN will help you resolve these. Your personal files (`config.yaml`, `CLAUDE.md`) always take priority. For template files, you choose which version to keep.
 
 **"marketplace update" fails** — Run `claude plugin marketplace list` to check if the Codex marketplace is registered. If not, re-add it: `claude plugin marketplace add fluidstackio/codex`
 
-**Skill regeneration lost my customizations** — If you manually edited a skill and then regenerated, the manual edits are gone. Check git history: `cd ~/marvin && git log --oneline skills/` to find and restore previous versions.
+**Skill regeneration lost my customizations** — If you manually edited a skill and then regenerated, the manual edits are gone. Check git history: `git log --oneline skills/` to find and restore previous versions.

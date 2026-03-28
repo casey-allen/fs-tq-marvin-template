@@ -196,95 +196,63 @@ Ask these questions one at a time, waiting for answers:
    - Casual (friendly, relaxed, conversational)
    - Sarcastic (dry wit, like the original Marvin from Hitchhiker's Guide)
 
-### Step 3: Create Your Workspace
+### Step 3: Personalize Your Workspace
 
-This is where we set up the user's personal MARVIN workspace, separate from the template.
+This repo is already the user's workspace. No need to create a separate directory.
 
 Explain:
-> "Now I'm going to create your personal MARVIN workspace. This is where all your data, goals, and session logs will live. The template you downloaded will stay separate so you can get updates later."
+> "This repo is now yours. I'm going to personalize it with your info — set up your profile, create your config, and make sure the directories for your session logs and reports are ready."
 
-Ask where they'd like their MARVIN folder:
-> "Where would you like your MARVIN folder to live? I'd suggest somewhere easy to find:
-> - **Desktop** - Right there when you need it
-> - **Documents** - Tucked away but organized
->
-> Just say 'desktop' or 'documents', or tell me a different spot if you have somewhere in mind."
-
-**After they respond, explain what's about to happen:**
-> "Great! I'm going to run a few quick setup commands to create your workspace. You'll see some permission prompts pop up - just click **Accept** for each one. This is totally normal - I'm just:
-> - Creating your MARVIN folder
-> - Copying over the necessary files (commands, skills, etc.)
-> - Setting up your personal state files
->
-> This will only take a moment."
-
-**Create the workspace:**
-
-Run these commands (using their chosen path - `~/Desktop/marvin` or `~/Documents/marvin`):
+**Set up directories for user data:**
 
 ```bash
-# Create the workspace directory
-mkdir -p ~/marvin
+# Create directories for user data (if they don't exist)
+mkdir -p sessions
+mkdir -p reports
+mkdir -p skills
 
-# Copy the user-facing files from the template
-cp -r .claude ~/marvin/
-cp -r state ~/marvin/
-cp CLAUDE.md ~/marvin/
-cp .env.example ~/marvin/
-
-# Create empty directories for user data
-mkdir -p ~/marvin/sessions
-mkdir -p ~/marvin/reports
-mkdir -p ~/marvin/content
-
-# Create .marvin-source file pointing to this template
-echo "$(pwd)" > ~/marvin/.marvin-source
+# Create .gitkeep files so git tracks empty directories
+touch sessions/.gitkeep
+touch reports/.gitkeep
+touch skills/.gitkeep
 ```
 
-**What gets copied:**
+**What's already here:**
 - `.claude/` - MARVIN capabilities (commands, agents, skills)
-- `.claude/commands/` - Slash commands (user can add their own)
-- `.claude/agents/` - Subagent definitions (user can add their own)
-- `.claude/skills/` - Reusable skills (user can add their own)
-- `CLAUDE.md` - Main context file (will be personalized)
-- `.env.example` - Template for API keys
-
-**What stays in the template:**
-- `.marvin/` - Setup scripts and integrations (run from here when needed)
-- `sessions/`, `reports/` - Created fresh in workspace
-- State (priorities, goals) lives in your Obsidian vault once configured
+- `CLAUDE.md` - Main context file (will be personalized next)
+- `guides/` - Setup walkthroughs
+- `skill-blueprints/` - Templates for generating personalized skills
+- `profiles/` - Role-based config presets
 
 Tell the user:
-> "I've created your MARVIN workspace at {path}. This is your personal space - all your data stays here. The template folder stays separate so you can get updates when new features are added."
+> "Your workspace is ready. Everything lives right here in this repo — your data, your config, and your MARVIN capabilities all in one place."
 
-### Step 4: Set Up Git (Optional)
+### Step 4: Verify Git Remotes
 
-Ask: "Would you like to track your MARVIN workspace with git? This lets you back up your data and optionally sync it to GitHub."
+The repo should already be cloned from the user's fork. Verify the remotes are set up correctly.
 
-If yes:
+Check:
 ```bash
-cd ~/marvin
-git init
-git add .
-git commit -m "Initial MARVIN setup"
+git remote -v
 ```
 
-Then ask: "Do you want to connect this to a GitHub repository? If so, create a **private** repository on GitHub and paste the URL here. Or press Enter to skip - you can always add this later."
+**Expected:**
+- `origin` → user's fork (e.g., `github.com/USERNAME/fs-tq-marvin-template`)
+- `upstream` → org template (`github.com/fluidstackio/fs-tq-marvin-template`)
 
-If they provide a URL:
+**If `upstream` is missing**, add it:
 ```bash
-git remote add origin {their-url}
-git push -u origin main
+git remote add upstream git@github.com:fluidstackio/fs-tq-marvin-template.git
 ```
 
-If they skip or say no:
-> "No problem! Your workspace is set up locally. You can always add GitHub later if you want to back things up."
+**If `origin` points to the org repo** (user cloned instead of forking):
+> "It looks like you cloned the org repo directly instead of forking. That's fine for now — you can fix this later by forking on GitHub and updating your remotes. Everything will still work."
 
 ### Step 5: Create Their Profile
 
-Now update the files **in the new workspace** with their info:
+Now update the files with their info:
 
-**Update `~/marvin/CLAUDE.md`** - Replace the "User Profile" section with their actual info:
+**Update `CLAUDE.md`** - Replace the "User Profile" section with their actual info:
 ```markdown
 ## User Profile
 
@@ -337,8 +305,9 @@ If yes, **set it up directly** (don't ask them to run a script):
 
 1. Detect their shell: `echo $SHELL`
 2. Determine config file: `.zshrc` for zsh, `.bashrc` for bash, `.profile` otherwise
-3. Check if `marvin()` function already exists in that file
-4. If not, append this function:
+3. Get the current repo path: `pwd`
+4. Check if `marvin()` function already exists in that file
+5. If not, append this function:
 
 ```bash
 # MARVIN - AI Chief of Staff
@@ -350,15 +319,15 @@ marvin() {
     echo -e '\e[1;33m██║ ╚═╝ ██║██╗██║  ██║██╗██║  ██║██╗╚████╔╝██╗██║██╗██║ ╚████║██╗\e[0m'
     echo -e '\e[1;33m╚═╝     ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝ ╚═══╝ ╚═╝╚═╝╚═╝╚═╝  ╚═══╝╚═╝\e[0m'
     echo ''
-    cd "{WORKSPACE_PATH}" && claude
+    cd "{REPO_PATH}" && claude
 }
 ```
 
-Replace `{WORKSPACE_PATH}` with their actual workspace path (e.g., `~/marvin`).
+Replace `{REPO_PATH}` with the current repo path (from `pwd`).
 
-5. Tell them: "Done! After we finish here, open a new terminal and you can start me anytime by typing `marvin`."
+6. Tell them: "Done! After we finish here, open a new terminal and you can start me anytime by typing `marvin`."
 
-If they skip: "No worries! You can always navigate to your MARVIN folder and run `claude` to start me."
+If they skip: "No worries! You can always navigate to this folder and run `claude` to start me."
 
 ### Step 7: Explain the Daily Workflow
 
@@ -402,8 +371,8 @@ This is important - set expectations about MARVIN's personality:
 
 ### Step 9: Connect Your Tools (Optional)
 
-Tell them about the template first:
-> "One more thing before we wrap up: **Keep the template folder you downloaded.** That's where I get updates from. When new features or integrations are added, you can run `/sync` to pull them into your workspace. Don't worry - your personal data is safe in your MARVIN folder and won't be overwritten."
+Tell them about updates:
+> "When new features are added to the MARVIN template, you can run `/sync` inside MARVIN to pull them in. It uses git to merge updates from the upstream template repo."
 
 Then ask about integrations:
 > "I can connect to several tools to help you out. Which of these do you use?"
@@ -514,7 +483,7 @@ claude mcp add slack -s user \
 After adding integrations, create a file to track what needs `/mcp` authentication:
 
 ```bash
-# In the user's workspace (e.g., ~/marvin)
+# In the workspace root
 cat > .onboarding-pending-auth << 'EOF'
 # Integrations pending authentication
 # MARVIN will read this file on next startup and guide you through auth
@@ -576,13 +545,11 @@ Once setup is complete, MARVIN should:
 1. Never show this onboarding flow again
 2. Use the normal `/start` briefing flow
 3. Reference CLAUDE.md for the user's profile and preferences
-4. Run from the user's workspace directory (e.g., ~/marvin), not the template
 
 ## Getting Updates (/sync)
 
 When the user runs `/sync`, MARVIN should:
-1. Read `.marvin-source` to find the template directory
-2. Check for new/updated files in the template's `.claude/commands/`, `.claude/agents/`, and `.claude/skills/`
-3. Copy new files to the user's workspace
-4. For conflicts, the user's version is the source of truth (don't overwrite)
-5. Report what was updated
+1. Fetch from the `upstream` remote (`git fetch upstream`)
+2. Merge updates (`git merge upstream/main`)
+3. Handle any merge conflicts (user's personal files take priority)
+4. Report what was updated

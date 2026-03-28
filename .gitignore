@@ -32,6 +32,12 @@ Thumbs.db
 *.db
 *.sqlite
 
+# User data (personal to each fork)
+sessions/
+!sessions/.gitkeep
+reports/
+!reports/.gitkeep
+
 # Keep these tracked
 !.gitkeep
 fs-tq-marvin-template.code-workspace

@@ -31,11 +31,8 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Get the template directory (parent of .marvin where this script lives)
-TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-
-# Default workspace location
-DEFAULT_WORKSPACE="$HOME/start"
+# Get the repo directory (parent of .marvin where this script lives)
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 print_header "MARVIN Setup"
 echo "Welcome! Let's set up your personal AI Chief of Staff."
@@ -94,35 +91,56 @@ else
 fi
 
 # ============================================================================
-# PHASE 2: Workspace Location
+# PHASE 2: Verify Git Remotes
 # ============================================================================
 
-print_header "Phase 2: Workspace Location"
+print_header "Phase 2: Git Remotes"
 
-echo "Where would you like your MARVIN workspace?"
-echo "This is where your data, goals, and session logs will live."
-echo ""
-echo "Default: $DEFAULT_WORKSPACE"
-read -p "Press Enter for default, or type a path: " WORKSPACE_INPUT
+cd "$REPO_DIR"
 
-if [[ -z "$WORKSPACE_INPUT" ]]; then
-    WORKSPACE_DIR="$DEFAULT_WORKSPACE"
-else
-    # Expand ~ if present
-    WORKSPACE_DIR="${WORKSPACE_INPUT/#\~/$HOME}"
+# Check if this is a git repo
+if [[ ! -d "$REPO_DIR/.git" ]]; then
+    print_color "$RED" "This doesn't appear to be a git repository."
+    print_color "$RED" "Please clone your fork first. See the getting started guide."
+    exit 1
 fi
 
-# Check if workspace already exists
-if [[ -d "$WORKSPACE_DIR" ]]; then
-    print_color "$YELLOW" "Warning: $WORKSPACE_DIR already exists."
-    read -p "Continue and merge with existing? [y/N]: " CONTINUE_MERGE
-    if [[ ! "$CONTINUE_MERGE" =~ ^[Yy]$ ]]; then
-        print_color "$RED" "Setup cancelled."
+# Check origin remote
+ORIGIN_URL=$(git remote get-url origin 2>/dev/null || echo "")
+UPSTREAM_URL=$(git remote get-url upstream 2>/dev/null || echo "")
+
+if [[ -z "$ORIGIN_URL" ]]; then
+    print_color "$RED" "No 'origin' remote found. Something is wrong with your clone."
+    exit 1
+fi
+
+# Check if origin points to the org repo (common mistake: cloned instead of forked)
+if [[ "$ORIGIN_URL" == *"fluidstackio/fs-tq-marvin-template"* ]]; then
+    print_color "$YELLOW" "Warning: Your 'origin' points to the org repo, not your fork."
+    echo "This means you cloned directly instead of forking first."
+    echo ""
+    echo "To fix this later:"
+    echo "  1. Fork the repo on GitHub"
+    echo "  2. Run: git remote rename origin upstream"
+    echo "  3. Run: git remote add origin git@github.com:YOUR_USERNAME/fs-tq-marvin-template.git"
+    echo ""
+    read -p "Continue anyway? [y/N]: " CONTINUE_ANYWAY
+    if [[ ! "$CONTINUE_ANYWAY" =~ ^[Yy]$ ]]; then
+        print_color "$RED" "Setup cancelled. Fork the repo first, then try again."
         exit 1
     fi
+else
+    print_color "$GREEN" "Origin: $ORIGIN_URL"
 fi
 
-print_color "$GREEN" "Workspace: $WORKSPACE_DIR"
+# Check for upstream remote
+if [[ -z "$UPSTREAM_URL" ]]; then
+    print_color "$YELLOW" "Adding upstream remote for template updates..."
+    git remote add upstream git@github.com:fluidstackio/fs-tq-marvin-template.git
+    print_color "$GREEN" "Upstream: git@github.com:fluidstackio/fs-tq-marvin-template.git"
+else
+    print_color "$GREEN" "Upstream: $UPSTREAM_URL"
+fi
 
 # ============================================================================
 # PHASE 3: Gather User Info
@@ -251,54 +269,39 @@ else
 fi
 
 # ============================================================================
-# PHASE 4: Create Workspace
+# PHASE 4: Personalize Files
 # ============================================================================
 
-print_header "Phase 4: Creating Your Workspace"
+print_header "Phase 4: Personalizing Your MARVIN"
 
-# Create workspace directory
-mkdir -p "$WORKSPACE_DIR"
+# Create directories for user data (if they don't exist)
+mkdir -p "$REPO_DIR/sessions"
+mkdir -p "$REPO_DIR/reports"
+mkdir -p "$REPO_DIR/skills"
 
-# Copy user-facing files from template
-echo "Copying files to workspace..."
-cp -r "$TEMPLATE_DIR/.claude" "$WORKSPACE_DIR/"
-cp "$TEMPLATE_DIR/CLAUDE.md" "$WORKSPACE_DIR/"
-[[ -f "$TEMPLATE_DIR/.env.example" ]] && cp "$TEMPLATE_DIR/.env.example" "$WORKSPACE_DIR/"
+# Create .gitkeep for empty directories
+touch "$REPO_DIR/sessions/.gitkeep"
+touch "$REPO_DIR/reports/.gitkeep"
+touch "$REPO_DIR/skills/.gitkeep"
 
-# Create empty directories for user data
-mkdir -p "$WORKSPACE_DIR/sessions"
-mkdir -p "$WORKSPACE_DIR/reports"
-mkdir -p "$WORKSPACE_DIR/skills"
-
-# Create .marvin-source file pointing to template
-echo "$TEMPLATE_DIR" > "$WORKSPACE_DIR/.marvin-source"
-
-print_color "$GREEN" "Workspace created at: $WORKSPACE_DIR"
-
-# ============================================================================
-# PHASE 5: Generate Files
-# ============================================================================
-
-print_header "Phase 5: Personalizing Your MARVIN"
-
-# Personalize CLAUDE.md (already copied from template in Phase 4)
+# Personalize CLAUDE.md
 echo "Personalizing CLAUDE.md..."
 TIMEZONE=$(python3 -c "import datetime; print(datetime.datetime.now().astimezone().tzname())" 2>/dev/null || echo "UTC")
 
-sed -i '' "s/\[Your name\]/${USER_NAME}/g" "$WORKSPACE_DIR/CLAUDE.md"
-sed -i '' "s/\[Your role\/title\]/${USER_ROLE}/g" "$WORKSPACE_DIR/CLAUDE.md"
-sed -i '' "s/\[Your company\/org\]/${USER_EMPLOYER:-Fluidstack}/g" "$WORKSPACE_DIR/CLAUDE.md"
-sed -i '' "s/\[Your timezone\]/${TIMEZONE}/g" "$WORKSPACE_DIR/CLAUDE.md"
-sed -i '' "s/\[Direct \/ Detailed \/ Casual \/ Formal\]/${PERSONALITY}/g" "$WORKSPACE_DIR/CLAUDE.md"
-sed -i '' "s/\*\*Current style:\*\* Default/**Current style:** ${PERSONALITY^}/g" "$WORKSPACE_DIR/CLAUDE.md"
+sed -i '' "s/\[Your name\]/${USER_NAME}/g" "$REPO_DIR/CLAUDE.md"
+sed -i '' "s/\[Your role\/title\]/${USER_ROLE}/g" "$REPO_DIR/CLAUDE.md"
+sed -i '' "s/\[Your company\/org\]/${USER_EMPLOYER:-Fluidstack}/g" "$REPO_DIR/CLAUDE.md"
+sed -i '' "s/\[Your timezone\]/${TIMEZONE}/g" "$REPO_DIR/CLAUDE.md"
+sed -i '' "s/\[Direct \/ Detailed \/ Casual \/ Formal\]/${PERSONALITY}/g" "$REPO_DIR/CLAUDE.md"
+sed -i '' "s/\*\*Current style:\*\* Default/**Current style:** ${PERSONALITY^}/g" "$REPO_DIR/CLAUDE.md"
 
 print_color "$GREEN" "Personalized: CLAUDE.md"
 
-# Generate config.yaml from profile
+# Generate config.yaml
 echo "Generating config.yaml..."
 
 # Start with base config
-cat > "$WORKSPACE_DIR/config.yaml" << CONFIG_EOF
+cat > "$REPO_DIR/config.yaml" << CONFIG_EOF
 # MARVIN Configuration
 # Generated by setup. Edit anytime — skills read from this file.
 # Run /guide inside MARVIN to customize interactively.
@@ -314,12 +317,12 @@ jira_base_url: https://fluidstack.atlassian.net/browse
 CONFIG_EOF
 
 # Append profile-specific config if a profile was selected
-if [[ -n "$PROFILE_FILE" && -f "$TEMPLATE_DIR/profiles/${PROFILE_FILE}.yaml" ]]; then
+if [[ -n "$PROFILE_FILE" && -f "$REPO_DIR/profiles/${PROFILE_FILE}.yaml" ]]; then
     # Strip the 'role:' line from profile (already set above) and append the rest
-    grep -v "^role:" "$TEMPLATE_DIR/profiles/${PROFILE_FILE}.yaml" >> "$WORKSPACE_DIR/config.yaml"
+    grep -v "^role:" "$REPO_DIR/profiles/${PROFILE_FILE}.yaml" >> "$REPO_DIR/config.yaml"
 else
     # Generic defaults for custom role
-    cat >> "$WORKSPACE_DIR/config.yaml" << CONFIG_CUSTOM_EOF
+    cat >> "$REPO_DIR/config.yaml" << CONFIG_CUSTOM_EOF
 # --- Jira ---
 jira_projects: []
 
@@ -342,7 +345,7 @@ CONFIG_CUSTOM_EOF
 fi
 
 # Append common config sections (keys NOT already set by profile/custom block)
-cat >> "$WORKSPACE_DIR/config.yaml" << CONFIG_COMMON_EOF
+cat >> "$REPO_DIR/config.yaml" << CONFIG_COMMON_EOF
 
 # --- Obsidian ---
 obsidian_vault: ""
@@ -366,16 +369,13 @@ CONFIG_COMMON_EOF
 
 print_color "$GREEN" "Created: config.yaml"
 
-# Create .gitkeep for empty directories
-touch "$WORKSPACE_DIR/sessions/.gitkeep"
-
 print_color "$GREEN" "Created: sessions/ directory"
 
 # ============================================================================
-# PHASE 6: Shell Alias
+# PHASE 5: Shell Alias
 # ============================================================================
 
-print_header "Phase 6: Shell Alias"
+print_header "Phase 5: Shell Alias"
 
 # Determine shell config file
 if [[ "$SHELL" == *"zsh"* ]]; then
@@ -406,7 +406,7 @@ marvin() {
     echo -e '\e[0;36m▌▌▙▖█▌▙▌▄▌  ▚▘█▌▌ ▌▙▌▙▌▄▌  ▟▖▌▌▌▙▌▙▌▌ ▐▖█▌▌▌▐▖  ▌▝▌▙▌▐▖▌▐ ▌▙▖█▌▐▖▌▙▌▌▌▄▌\e[0m'
     echo -e '\e[0;36m                                ▌                                       \e[0m'
     echo ''
-    cd \"$WORKSPACE_DIR\" && claude
+    cd \"$REPO_DIR\" && claude
 }
 "
 
@@ -423,7 +423,7 @@ if [[ -n "$IDE_CMD" ]]; then
     MCODE_FUNCTION="
 # MARVIN - Open in IDE
 mcode() {
-    $IDE_CMD \"$WORKSPACE_DIR\"
+    $IDE_CMD \"$REPO_DIR\"
 }
 "
     if grep -q "^mcode()" "$SHELL_RC" 2>/dev/null; then
@@ -435,28 +435,10 @@ mcode() {
 fi
 
 # ============================================================================
-# PHASE 7: Initialize Git
+# PHASE 6: Base Integrations
 # ============================================================================
 
-print_header "Phase 7: Git Setup"
-
-if [[ ! -d "$WORKSPACE_DIR/.git" ]]; then
-    cd "$WORKSPACE_DIR"
-    git init
-    git add .
-    git commit -m "Initial MARVIN setup
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
-    print_color "$GREEN" "Git repository initialized"
-else
-    print_color "$YELLOW" "Git repository already exists"
-fi
-
-# ============================================================================
-# PHASE 8: Base Integrations
-# ============================================================================
-
-print_header "Phase 8: Base Integrations"
+print_header "Phase 6: Base Integrations"
 
 echo "Setting up core capabilities..."
 
@@ -478,8 +460,7 @@ print_header "Setup Complete!"
 
 echo "Your MARVIN is ready!"
 echo ""
-print_color "$CYAN" "Workspace: $WORKSPACE_DIR"
-print_color "$CYAN" "Template:  $TEMPLATE_DIR"
+print_color "$CYAN" "Workspace: $REPO_DIR"
 echo ""
 echo "Available commands (open a new terminal first, or run: source $SHELL_RC)"
 echo ""
@@ -490,7 +471,6 @@ fi
 echo ""
 echo "Once Claude Code starts, type /start to begin your first session."
 echo ""
-print_color "$YELLOW" "Important: Keep the template folder ($TEMPLATE_DIR)!"
-print_color "$YELLOW" "That's where you'll get updates. Run /sync to pull new features."
+print_color "$YELLOW" "To get updates later: run /sync inside MARVIN (pulls from upstream template)"
 echo ""
 print_color "$GREEN" "Enjoy your new AI Chief of Staff!"

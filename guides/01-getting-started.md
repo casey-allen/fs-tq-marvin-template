@@ -1,7 +1,7 @@
 ---
 name: guide-getting-started
 description: >
-  Interactive guide to install Claude Code, clone the MARVIN template, and run
+  Interactive guide to install Claude Code, fork the MARVIN template, and run
   initial setup. Triggers on: "/guide getting-started",
   "help me get started", "how do I set up MARVIN".
 ---
@@ -22,8 +22,8 @@ description: >
 
 By the end of this guide you'll have:
 - Claude Code installed on your machine
-- The MARVIN template cloned
-- A personal MARVIN workspace with your profile
+- Your own fork of the MARVIN template
+- A personalized MARVIN workspace with your profile
 - A `marvin` command to launch your AI Chief of Staff from anywhere
 
 ## Step 1: Install Claude Code
@@ -65,30 +65,37 @@ You should see your GitHub username and "Logged in to github.com".
 
 **Don't have access?** Ask your team lead or IT to add you to the `fluidstackio` GitHub org.
 
-## Step 3: Clone the Template
+## Step 3: Fork and Clone
 
+1. **Fork the template** on GitHub: go to [github.com/fluidstackio/fs-tq-marvin-template](https://github.com/fluidstackio/fs-tq-marvin-template) and click **Fork** in the top-right corner. This creates your own copy under your GitHub account.
+
+2. **Clone your fork:**
 ```bash
 cd ~/git  # or wherever you keep repos
-git clone git@github.com:fluidstackio/fs-tq-marvin-template.git
+git clone git@github.com:YOUR_USERNAME/fs-tq-marvin-template.git
+cd fs-tq-marvin-template
 ```
 
-This downloads the MARVIN template to your machine. You'll only do this once.
+3. **Add the upstream remote** so you can pull template updates later:
+```bash
+git remote add upstream git@github.com:fluidstackio/fs-tq-marvin-template.git
+```
+
+Now `origin` points to your fork (your personal copy) and `upstream` points to the org template (where updates come from).
 
 ## Step 4: Run Setup
 
 ```bash
-cd ~/git/fs-tq-marvin-template
 ./.marvin/setup.sh
 ```
 
 The setup script will ask you a few questions:
-1. **Where to put your workspace** — This is where YOUR data lives (goals, sessions, notes). Default is `~/start` but you can pick anywhere.
-2. **Your name and role** — So MARVIN knows who you are.
-3. **Your Infrastructure role** — Network Engineer, Program Manager, or ICT Architect. This sets sensible defaults for Jira projects, Slack channels, etc.
-4. **Communication style** — How MARVIN should talk to you.
-5. **Your IDE** — So the `mcode` command opens the right editor.
+1. **Your name and role** — So MARVIN knows who you are.
+2. **Your Infrastructure role** — Network Engineer, Program Manager, or ICT Architect. This sets sensible defaults for Jira projects, Slack channels, etc.
+3. **Communication style** — How MARVIN should talk to you.
+4. **Your IDE** — So the `mcode` command opens the right editor.
 
-The script creates your workspace, sets up a `marvin` shell command, and initializes git.
+The script personalizes your `CLAUDE.md` and `config.yaml`, sets up a `marvin` shell command, and installs base integrations.
 
 ## Step 5: Launch MARVIN
 
@@ -113,6 +120,16 @@ You should see a list of available commands (`/start`, `/end`, `/update`, etc.).
 
 Run `/guide skills-and-mcp` to install company-wide skills like the NRFC writer, or type `/start` to begin your first session.
 
+## Keeping Updated
+
+When new features are added to the MARVIN template, pull them into your fork:
+
+```bash
+git pull upstream main
+```
+
+Or use the `/sync` command inside MARVIN, which does this for you. See [Guide 06](06-keeping-updated.md) for details.
+
 ## Troubleshooting
 
 **"command not found: marvin"** — Open a new terminal window. The setup added the command to your shell config, but it only takes effect in new terminals.
@@ -120,3 +137,12 @@ Run `/guide skills-and-mcp` to install company-wide skills like the NRFC writer,
 **"permission denied" when cloning** — Your GitHub SSH key may not be set up. Run `ssh-keygen` to create one and add it to GitHub (Settings > SSH Keys).
 
 **Setup script fails** — Make sure you have Homebrew (Mac) or npm (Linux) installed. The script will try to install them, but if it can't, install manually first.
+
+**Origin points to the org repo** — You cloned the org repo directly instead of forking first. Fix it:
+```bash
+# Rename current origin to upstream
+git remote rename origin upstream
+# Add your fork as origin
+git remote add origin git@github.com:YOUR_USERNAME/fs-tq-marvin-template.git
+git push -u origin main
+```

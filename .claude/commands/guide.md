@@ -15,16 +15,15 @@ Walk through setup guides interactively or list what's available.
 ### Step 1: Load Config
 
 Read `config.yaml` to check `guides_completed` list.
-Read `.marvin-source` to get the template path where guides live.
 
 ### Step 2: List or Launch
 
-**If no argument:** Read `{template_path}/guides/README.md` and display
+**If no argument:** Read `guides/README.md` and display
 the guide catalog with completion markers from config.yaml:
 - [x] completed guides
 - [ ] pending guides
 
-**If argument provided:** Find matching guide in `{template_path}/guides/`
+**If argument provided:** Find matching guide in `guides/`
 (match on filename slug or guide name — e.g., "obsidian" matches `03-obsidian-vault.md`,
 "getting-started" matches `01-getting-started.md`). Read the guide file and
 follow it interactively, step by step.

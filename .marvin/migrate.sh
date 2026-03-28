@@ -1,7 +1,14 @@
 #!/bin/bash
 
 # MARVIN Migration Script
-# Migrates existing MARVIN users to the new workspace separation architecture
+# DEPRECATED: This script was for the old two-directory architecture.
+# MARVIN now uses an in-place fork model. See guides/01-getting-started.md.
+# This file is kept for reference only.
+
+echo "This migration script is deprecated."
+echo "MARVIN now uses an in-place fork model — no separate workspace needed."
+echo "See guides/01-getting-started.md for the current setup process."
+exit 0
 
 set -e
 

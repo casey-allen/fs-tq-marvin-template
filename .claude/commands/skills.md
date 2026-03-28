@@ -79,7 +79,7 @@ claude plugin marketplace update
 If updates are available, list them and ask: "Update all, or pick specific ones?"
 
 **2. Workspace skill blueprints:**
-Read `.marvin-source` to find the template directory. Compare `skill-blueprints/` in the template with `skills/` in the workspace.
+Compare `skill-blueprints/` with `skills/` to check for blueprint updates.
 
 If blueprint updates are available:
 - Show what changed
