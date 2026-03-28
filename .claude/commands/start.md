@@ -11,24 +11,25 @@ Start up as MARVIN (Manages Appointments, Reads Various Important Notifications)
 ### 1. Establish Date
 Run `date +%Y-%m-%d` and `date +%A` to get today's date and day of week. Store as TODAY.
 
-### 2. Bootstrap Skills (first run only)
-Check if `find-skills` is installed. If not, install it silently:
-```bash
-ls ~/.agents/skills/find-skills/SKILL.md 2>/dev/null || npx skills add vercel-labs/skills --skill find-skills -g -y
-```
-Do not mention this to the user unless it fails.
+### 2. Load Configuration
+Read `config.yaml` to get Obsidian vault path, Jira projects, and other settings.
 
-### 3. Load Context
-Read these files in order:
+### 3. Load Context from Obsidian
+
+Read these files from the Obsidian vault (paths from config.yaml):
+
 1. `CLAUDE.md` - Core instructions and system context
-2. `state/current.md` - Current priorities, open threads, project statuses
-3. `state/goals.md` - Active goals and progress
-4. `state/decisions.md` - Recent decisions for context
+2. `{obsidian_vault}/Permanent/priorities.md` - Current priorities and open threads
+3. `{obsidian_vault}/Permanent/goals.md` - Active goals and progress
+4. `{obsidian_vault}/{daily_notes_dir}/{TODAY}.md` - Today's daily note (if exists)
+5. If no today note, read yesterday's daily note for continuity
+
+Extract tagged items from recent daily notes: ACTION, BLOCKED, WAITING, DELEGATE, DONE, LONG TERM.
 
 ### 4. Staleness Detection
-Check the "Last updated" line in `state/current.md`:
+Check the "Last updated" line in `{obsidian_vault}/Permanent/priorities.md`:
 - If **3+ days old**: flag it in the briefing as potentially stale and offer a full refresh
-- If missing: note that state has no timestamp and suggest adding one
+- If missing: note that priorities have no timestamp and suggest updating
 
 ### 5. Session Continuity
 Check for recent session logs to build context:
@@ -37,7 +38,7 @@ Check for recent session logs to build context:
 - Identify any open threads or unfinished work from recent sessions.
 
 ### 6. Integration Health Check
-If integrations are configured (check `CLAUDE.md` for any configured services):
+If integrations are configured (check config.yaml and CLAUDE.md):
 - Note which integrations are available
 - If any quick health checks are possible (e.g., auth status), run them
 - Do not block the briefing on integration issues, just note any problems
@@ -49,21 +50,25 @@ Format the briefing with these sections:
 ```
 Good {morning/afternoon/evening}. It's {DAY}, {DATE}.
 {If resuming: "Resuming today's session. Earlier we covered: {brief summary}"}
-{If stale state: "Heads up: state/current.md hasn't been updated in {N} days. Want me to do a full refresh?"}
+{If stale priorities: "Heads up: priorities haven't been updated in {N} days. Want me to do a full refresh?"}
 
 **PRIORITIES**
-- {Top 3-5 priorities from current.md, ordered by urgency}
+- {Top 3-5 priorities from priorities.md, ordered by urgency}
 
 **CALENDAR**
 - {Today's events if calendar integration available, otherwise skip this section}
+
+**DAILY NOTE**
+- {Tagged items from today's Obsidian note: ACTION items, BLOCKED items, carry-forwards}
+- {If no daily note exists: "No daily note for today yet."}
 
 **GOALS**
 - {Quick pulse on active goals from goals.md, focus on anything with recent activity}
 
 **ALERTS**
 - {Open threads needing attention}
+- {BLOCKED/WAITING items from recent daily notes}
 - {Overdue items from recent sessions}
-- {Anything flagged in decisions.md that needs follow-up}
 {If no alerts: omit this section}
 ```
 

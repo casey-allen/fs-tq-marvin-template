@@ -263,4 +263,4 @@ Want to build one? Pick from the list or add your own!
 
 ---
 
-*This integrations directory is part of [MARVIN](https://github.com/SterlingChin/marvin-template), the AI Chief of Staff template.*
+*This integrations directory is part of [MARVIN](https://github.com/fluidstackio/fs-tq-marvin-template), the AI Chief of Staff template.*

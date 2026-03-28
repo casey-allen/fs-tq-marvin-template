@@ -44,7 +44,8 @@ If it can't be tested easily, mark it as **Configured** (installed but unverifie
 
 Verify the MARVIN workspace is set up properly:
 
-- **State files** - Do `state/current.md` and `state/goals.md` exist and have real content (not just placeholders)?
+- **Config** - Does `config.yaml` exist with real values? Is `obsidian_vault` path set and valid?
+- **Obsidian state** - Do `{obsidian_vault}/Permanent/priorities.md` and `goals.md` exist?
 - **Session logs** - Is there a recent session log in `sessions/`? How many days since the last session?
 - **Git status** - Is the workspace a git repo? Any uncommitted changes?
 - **User profile** - Is the CLAUDE.md user profile section configured?

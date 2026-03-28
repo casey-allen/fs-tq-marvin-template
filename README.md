@@ -18,8 +18,8 @@ MARVIN extends Claude Code with capabilities designed for getting things done:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/SterlingChin/marvin-template.git
-   cd marvin-template
+   git clone git@github.com:fluidstackio/fs-tq-marvin-template.git
+   cd fs-tq-marvin-template
    ```
 
 2. Open in Claude Code:
@@ -32,36 +32,6 @@ MARVIN extends Claude Code with capabilities designed for getting things done:
 
 That's it. MARVIN walks you through the rest: your profile, goals, workspace location, and optional integrations.
 
-## Getting Started with GitHub Copilot CLI
-
-Want to use Copilot CLI to set up MARVIN quickly? Here's how:
-
-### Prerequisites
-
-- [GitHub Copilot CLI](https://cli.github.com/) installed and authenticated
-
-### Quick Setup
-
-Use these Copilot commands to get started:
-
-```bash
-# Navigate to your projects directory
-gh copilot suggest "clone marvin template repository"
-
-# Run the setup script
-gh copilot suggest "run setup script for marvin"
-
-# Start MARVIN
-gh copilot suggest "start marvin AI assistant"
-```
-
-The `.marvin/setup.sh` script handles the complete installation: prerequisites, workspace creation, profile setup, and shell aliases. Just follow the prompts to configure your AI Chief of Staff.
-
-For additional integrations (Google Workspace, Slack, etc.), use:
-
-```bash
-gh copilot suggest "configure marvin integrations"
-```
 
 ## What You Get
 
@@ -122,7 +92,7 @@ MARVIN separates your workspace from the template:
 ├── sessions/               Your daily session logs
 └── ...
 
-~/marvin-template/          Template (get updates here)
+~/fs-tq-marvin-template/    Template (get updates here)
 ├── .marvin/                Setup scripts and integrations
 ├── .claude/                Command and agent templates
 └── ...
@@ -135,7 +105,7 @@ Your workspace holds all personal data. The template provides updates. Run `/syn
 If you were using MARVIN before the workspace separation:
 
 ```bash
-cd marvin-template
+cd fs-tq-marvin-template
 ./.marvin/migrate.sh
 ```
 
@@ -155,4 +125,4 @@ Fork the repo, create a branch, and submit a PR. All contributions are reviewed.
 
 MARVIN is named after the Paranoid Android from The Hitchhiker's Guide to the Galaxy.
 
-Created by [Sterling Chin](https://sterlingchin.com).
+Originally created by [Sterling Chin](https://sterlingchin.com). Adapted for Fluidstack Infrastructure org.

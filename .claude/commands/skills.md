@@ -1,12 +1,12 @@
 ---
-description: Search, browse, and install agent skills from the skills.sh ecosystem
+description: Manage skills — list installed, install from Codex marketplace, check for updates
 ---
 
-# /skills - Skill Discovery
+# /skills - Skill Management
 
-Manage and discover agent skills from the open skills ecosystem.
+Manage MARVIN skills and Codex marketplace plugins.
 
-**Argument:** `$ARGUMENTS` (expects a sub-command: `list`, `search <query>`, `install <package>`, `update`)
+**Argument:** `$ARGUMENTS` (expects a sub-command: `list`, `install`, `update`, `search`)
 
 ## Sub-Commands
 
@@ -14,66 +14,91 @@ Manage and discover agent skills from the open skills ecosystem.
 
 Show available sub-commands:
 ```
-/skills list           Show installed skills
-/skills search <query> Search the skills.sh ecosystem
-/skills install <pkg>  Install a skill (with confirmation)
-/skills update         Check for and apply skill updates
+/skills list              Show installed skills (workspace + Codex plugins)
+/skills install <plugin>  Install a Codex plugin (e.g., codex-document-skills)
+/skills update            Check for and apply skill updates
+/skills search <query>    Search for skills in the Codex marketplace
 ```
 
 ### `list`
 
-Show currently installed skills.
+Show all installed skills from both sources:
 
+**1. Workspace skills** — List files in `skills/` directory:
 ```bash
-npx skills list 2>/dev/null || echo "Skills CLI not found. Install with: npm i -g skills"
+ls -d skills/*/SKILL.md 2>/dev/null
 ```
 
-Present results grouped by scope (global vs project-level).
-
-### `search <query>`
-
-Search the skills.sh ecosystem for skills matching the query.
-
+**2. Codex marketplace plugins** — List installed plugins:
 ```bash
-npx skills find <query>
+claude plugin list
 ```
 
-1. Parse results into a clean list: skill name, description, install command
-2. Present numbered options
-3. Ask: "Want me to install any of these?"
-4. If yes, run the install flow below
+Present results grouped by source:
 
-### `install <package>`
+```
+## Installed Skills
 
-Install a skill with confirmation.
+### Workspace Skills (personal)
+- team-digest — Daily team engineering digest
+- weekly-review — Weekly review and planning
 
-1. Show the skill name and package identifier
-2. Link to the skills.sh page if available: `https://skills.sh/<owner>/<repo>/<skill>`
-3. Ask: "Install this skill? (y/n)"
-4. On confirmation:
+### Codex Plugins (company-wide)
+- codex-document-skills — NRFC writer, RFC crafter, PRD crafter, markdown formatter
+
+No skills? Run /guide skills-and-mcp to get started.
+```
+
+### `install <plugin>`
+
+Install a plugin from the Codex marketplace.
+
+1. If the Codex marketplace isn't registered yet:
    ```bash
-   npx skills add <package> -g -y
+   claude plugin marketplace add fluidstackio/codex
    ```
-5. Confirm success or report errors
+2. Install the requested plugin:
+   ```bash
+   claude plugin install <plugin>
+   ```
+3. Confirm success: "Installed! Restart MARVIN for the new skills to appear."
+
+**Available plugins:**
+- `codex-document-skills` — NRFC writer, RFC crafter, PRD crafter, markdown formatter
+- `codex-frontend-skills` — Frontend PR workflow
 
 ### `update`
 
-Check for and apply skill updates.
+Check for updates to both Codex plugins and workspace skill blueprints.
 
+**1. Codex marketplace:**
 ```bash
-npx skills check
+claude plugin marketplace update
 ```
 
-If updates are available:
-1. List skills with available updates
-2. Ask: "Update all, or pick specific ones?"
-3. Run:
-   ```bash
-   npx skills update
-   ```
+If updates are available, list them and ask: "Update all, or pick specific ones?"
+
+**2. Workspace skill blueprints:**
+Read `.marvin-source` to find the template directory. Compare `skill-blueprints/` in the template with `skills/` in the workspace.
+
+If blueprint updates are available:
+- Show what changed
+- Offer to regenerate skills from updated blueprints + config.yaml
+- Never overwrite without confirmation
+
+### `search <query>`
+
+Search the Codex marketplace for matching skills:
+
+```bash
+claude plugin marketplace list
+```
+
+Filter results by query and present matches. If no match, suggest checking the Codex repo directly.
 
 ## Notes
 
-- Browse skills visually at https://skills.sh
-- Skills install to `~/.agents/skills/` (global) or `.agents/skills/` (project)
-- The `find-skills` skill enables proactive skill suggestions during normal conversation
+- Codex marketplace: `fluidstackio/codex` (private, requires GitHub access)
+- Workspace skills live in `skills/` and are generated via `/guide`
+- Codex plugins are managed by Claude Code's plugin system, separate from workspace skills
+- Run `/guide skills-and-mcp` for a full walkthrough of the skills ecosystem

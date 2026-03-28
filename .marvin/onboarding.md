@@ -34,8 +34,7 @@ If this file exists:
 ### 2. Check for Fresh Setup Needed
 
 Check these signs:
-- Does `state/current.md` contain "{{" placeholders or "[Add your priorities here]"?
-- Does `state/goals.md` contain placeholder text?
+- Is `config.yaml` missing or empty?
 - Is there NO personalized user information in `CLAUDE.md`?
 
 If any of these are true, run the full onboarding flow starting at Step 1.
@@ -247,13 +246,13 @@ echo "$(pwd)" > ~/marvin/.marvin-source
 - `.claude/commands/` - Slash commands (user can add their own)
 - `.claude/agents/` - Subagent definitions (user can add their own)
 - `.claude/skills/` - Reusable skills (user can add their own)
-- `state/` - Current priorities and goals (will be personalized)
 - `CLAUDE.md` - Main context file (will be personalized)
 - `.env.example` - Template for API keys
 
 **What stays in the template:**
 - `.marvin/` - Setup scripts and integrations (run from here when needed)
-- `sessions/`, `reports/`, `content/` - Created fresh in workspace
+- `sessions/`, `reports/` - Created fresh in workspace
+- State (priorities, goals) lives in your Obsidian vault once configured
 
 Tell the user:
 > "I've created your MARVIN workspace at {path}. This is your personal space - all your data stays here. The template folder stays separate so you can get updates when new features are added."
@@ -285,53 +284,6 @@ If they skip or say no:
 
 Now update the files **in the new workspace** with their info:
 
-**Update `~/marvin/state/goals.md`** with their goals organized by type:
-```markdown
-# Goals
-
-Last updated: {TODAY'S DATE}
-
-## Work Goals
-
-- {Work goal 1}
-- {Work goal 2}
-...
-
-## Personal Goals
-
-- {Personal goal 1}
-- {Personal goal 2}
-...
-
-## Tracking
-
-| Goal | Type | Status | Notes |
-|------|------|--------|-------|
-| {Goal 1} | Work | Not started | |
-| {Goal 2} | Personal | Not started | |
-...
-```
-
-**Update `~/marvin/state/current.md`**:
-```markdown
-# Current State
-
-Last updated: {TODAY'S DATE}
-
-## Active Priorities
-
-1. Complete MARVIN setup
-2. {Their first priority if they mentioned one}
-
-## Open Threads
-
-- None yet
-
-## Recent Context
-
-- Just set up MARVIN!
-```
-
 **Update `~/marvin/CLAUDE.md`** - Replace the "User Profile" section with their actual info:
 ```markdown
 ## User Profile
@@ -346,6 +298,24 @@ Last updated: {TODAY'S DATE}
 
 **Communication Style:** {Their preference - Professional/Casual/Sarcastic}
 ```
+
+### Step 5.5: Discover Setup Guides
+
+Tell them about the guides:
+
+> "Before we continue, I want to let you know about something cool. I have interactive setup guides that help you get the most out of me:
+>
+> 1. **Skills & MCP** — Install company-wide skills like the NRFC writer
+> 2. **Obsidian Vault** — Set up a git-tracked second brain for daily notes and task tracking
+> 3. **Team Digest** — Create a daily digest of your team's Jira, Slack, and GitHub activity
+> 4. **Weekly Review** — Automate your weekly planning with notes + Jira integration
+> 5. **Keeping Updated** — How to stay current as new features ship
+>
+> You can run these anytime by typing `/guide` inside MARVIN. Each one walks you through setup step by step — no coding experience needed.
+>
+> Want to try one now, or finish the basic setup first?"
+
+If they want to try one now, run `/guide` and let them pick. Otherwise, continue to Step 6.
 
 ### Step 6: Quick Launch Shortcut (Optional)
 

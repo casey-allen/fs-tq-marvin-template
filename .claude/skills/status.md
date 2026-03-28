@@ -57,11 +57,12 @@ Classify results:
 
 Verify these components:
 
-1. **User Profile** — Is the profile section in CLAUDE.md filled in (not "NOT CONFIGURED")?
-2. **State Files** — Do `state/current.md` and `state/goals.md` contain real content (not placeholders)?
-3. **Session Recency** — When was the last session log in `sessions/`? Flag if >7 days.
-4. **Git Status** — Is the workspace a git repo? Any uncommitted changes?
-5. **Goals** — Are there active goals in `state/goals.md`?
+1. **User Profile** — Is the profile section in CLAUDE.md filled in (not template defaults)?
+2. **Config** — Does `config.yaml` exist and have real values (not empty)?
+3. **Obsidian Vault** — Is `obsidian_vault` set in config.yaml and does the path exist?
+4. **Priorities** — Does `{obsidian_vault}/Permanent/priorities.md` exist with real content?
+5. **Session Recency** — When was the last session log in `sessions/`? Flag if >7 days.
+6. **Git Status** — Is the workspace a git repo? Any uncommitted changes?
 
 ### Step 4: Identify Available Integrations
 
