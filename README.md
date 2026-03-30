@@ -17,16 +17,19 @@ Setup includes role-based defaults that pre-configure your Jira projects, Slack 
 
 ## Quick Start
 
+1. **Fork** this repo on GitHub (click "Fork" in the top-right corner)
+2. **Clone your fork** and run setup:
+
 ```bash
-# Clone the template
-git clone git@github.com:fluidstackio/fs-tq-marvin-template.git
+git clone git@github.com:YOUR_USERNAME/fs-tq-marvin-template.git
 cd fs-tq-marvin-template
+git remote add upstream git@github.com:fluidstackio/fs-tq-marvin-template.git
 
 # Run interactive setup
 ./.marvin/setup.sh
 ```
 
-Setup takes about 5 minutes and creates a personal workspace with your profile, config, and shell aliases.
+Setup takes about 5 minutes and personalizes your workspace with your profile, config, and shell aliases.
 
 Then open a new terminal and type `marvin` to start. Inside MARVIN, type `/guide` to walk through additional setup.
 
@@ -42,7 +45,7 @@ MARVIN includes 6 setup guides that walk you through capabilities step by step:
 
 | Guide | What It Covers |
 |-------|---------------|
-| [Getting Started](guides/01-getting-started.md) | Install Claude Code, clone template, run setup |
+| [Getting Started](guides/01-getting-started.md) | Install Claude Code, fork and clone, run setup |
 | [Skills & MCP](guides/02-skills-and-mcp.md) | Codex marketplace, company skills (NRFC writer, etc.) |
 | [Obsidian Vault](guides/03-obsidian-vault.md) | Git-tracked second brain with daily notes and task tracking |
 | [Team Digest](guides/04-team-digest.md) | Daily Jira/Slack/GitHub synthesis posted to your team's Slack |

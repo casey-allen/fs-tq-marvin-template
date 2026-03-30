@@ -218,6 +218,7 @@ MARVIN can monitor your calendar for patterns. Add detection rules here:
 | `/end` | End session and save everything |
 | `/update` | Quick checkpoint (save progress) |
 | `/report` | Generate a weekly summary of your work |
+| `/notes` | Commit and push your Obsidian vault |
 | `/commit` | Review and commit git changes |
 | `/code` | Open MARVIN in your IDE |
 | `/guide` | Interactive setup walkthroughs |
