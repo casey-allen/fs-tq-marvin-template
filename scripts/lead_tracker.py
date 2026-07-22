@@ -22,6 +22,7 @@ dumb: auth + ranges only.
 
 import json
 import os
+import signal
 import sys
 from pathlib import Path
 
@@ -58,7 +59,7 @@ def _headers():
 
 
 def get_values(sheet_id, rng):
-    r = requests.get(f"{API}/{sheet_id}/values/{requests.utils.quote(rng)}", headers=_headers())
+    r = requests.get(f"{API}/{sheet_id}/values/{requests.utils.quote(rng)}", headers=_headers(), timeout=30)
     r.raise_for_status()
     return r.json().get("values", [])
 
@@ -69,6 +70,7 @@ def update_values(sheet_id, rng, values):
         headers=_headers(),
         params={"valueInputOption": "USER_ENTERED"},
         json={"values": values},
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()
@@ -89,6 +91,7 @@ def doc_create(folder_id, title, markdown):
         f"{DRIVE_UPLOAD}?uploadType=multipart&fields=id,webViewLink&supportsAllDrives=true",
         headers={**_headers(), "Content-Type": "multipart/related; boundary=BOUNDARY"},
         data=body,
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()
@@ -100,6 +103,7 @@ def doc_replace(file_id, markdown):
         f"{DRIVE_UPLOAD}/{file_id}?uploadType=media&supportsAllDrives=true",
         headers={**_headers(), "Content-Type": "text/markdown"},
         data=markdown.encode(),
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()
@@ -110,12 +114,20 @@ def doc_read(file_id):
     r = requests.get(
         f"{DRIVE_API}/{file_id}/export?mimeType=text/markdown",
         headers=_headers(),
+        timeout=30,
     )
     r.raise_for_status()
     return r.text
 
 
+def _hang_guard(signum, frame):
+    print("TIMEOUT: no response from googleapis.com within 60s — network egress from this sandbox is likely blocked. Report this exact message.", file=sys.stderr)
+    sys.exit(3)
+
+
 def main():
+    signal.signal(signal.SIGALRM, _hang_guard)
+    signal.alarm(60)
     args = sys.argv[1:]
     sheet_id = SHEET_ID
     if "--sheet-id" in args:
