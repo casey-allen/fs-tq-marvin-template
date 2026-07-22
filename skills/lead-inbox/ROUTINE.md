@@ -16,7 +16,7 @@ Your job each run: **Sweep A** — intake newly labeled lead emails into the Mas
 
 **Sheet access** is via `scripts/lead_tracker.py` (the Sheets MCP is not available in the cloud). First Bash call: `pip install -q google-auth requests`. The service-account key arrives as env var `GSHEETS_SA_JSON`. If the var is missing or auth fails, DM Casey a ⚠️ and stop — do not improvise sheet access.
 
-**Gmail search note:** the search tool takes label IDs, not names — new leads are `label:Label_23820512566223573 -label:Label_2`.
+**Gmail search note:** in SEARCH queries use label NAMES, lowercase, slashes as hyphens — new leads are `label:lead -label:lead-logged`. (Searching by label ID silently returns nothing — verified empirically 2026-07-21, despite tool docs saying otherwise.) The label IDs above are still what you pass to the label/unlabel tools when stamping.
 
 ## The tracker is John's shared system — non-negotiables
 
@@ -30,6 +30,7 @@ Write mechanics: onEdit does not fire on API writes → always set C (new rows) 
 
 1. Ground yourself: header row check (above); read `A:A` for max Lead ID; read columns `A,D,E,O` to build the dedup set (Company + State, wording-tolerant).
 2. Gmail: find labeled-not-logged threads (search above). Pull full thread content for each.
+   **Backlog guard:** process at most 15 threads per run, oldest first — the rest catch the next run (stamping makes this safe). If more than 5 of a run's threads turn out to be dedup hits (already tracked), do NOT post a card for each: post ONE digest message listing them (`Backfilled N already-tracked leads: L-0xx {name}, …`) and reserve individual cards for genuinely new leads. This keeps a backlog from flooding the channel.
 3. Casey labeled these by hand, so treat them as intentional — but if one is plainly not a site opportunity (newsletter, tombstone blast), skip the tracker row, post a one-line card saying why, and still stamp `Lead/Logged`.
 4. **Already tracked?** (dedup hit) → no new row. Post a short card noting it matches existing `L-NNN`, append a Notes line to that row (`YYYY-MM-DD: new email in #bd-lead-inbox thread per <sender>`), set U, stamp the label.
 5. **New lead** → assign next `L-NNN` and write the row per the conventions above: every extractable field (seller figures are claims, not facts); Contact = the single current point of contact; Stage = `Lead` (`Discovery` if already being worked, `VDR/RFI Review` if a data room is in hand); B Status = `Pursuing`; S DRI = `Casey`; score the 8 Discovery criteria per the sheet's live `Scoring Rubric` tab with a one-line rationale per score in Notes (be skeptical on Equipment/Procurement — a 5 is near-nonexistent); T Next Steps = `Triage in #bd-lead-inbox (👍/❌)`.
