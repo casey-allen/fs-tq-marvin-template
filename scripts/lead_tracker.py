@@ -31,8 +31,14 @@ from google.oauth2 import service_account
 
 SHEET_ID = "1mSDdIeERKPoBeaOa_T7lHi5MA4aSOyndz7-Bfd_VfZg"
 TAB = "Lead Tracker"
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive",
+]
 API = "https://sheets.googleapis.com/v4/spreadsheets"
+DRIVE_API = "https://www.googleapis.com/drive/v3/files"
+DRIVE_UPLOAD = "https://www.googleapis.com/upload/drive/v3/files"
+DOC_MIME = "application/vnd.google-apps.document"
 
 
 def _creds():
@@ -68,6 +74,47 @@ def update_values(sheet_id, rng, values):
     return r.json()
 
 
+def doc_create(folder_id, title, markdown):
+    """Create a Google Doc in folder_id from markdown (Drive converts). Prints file id + link.
+    Requires the folder to be shared (Editor) with the service account."""
+    meta = json.dumps({"name": title, "mimeType": DOC_MIME, "parents": [folder_id]})
+    body = (
+        b"--BOUNDARY\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"
+        + meta.encode()
+        + b"\r\n--BOUNDARY\r\nContent-Type: text/markdown\r\n\r\n"
+        + markdown.encode()
+        + b"\r\n--BOUNDARY--"
+    )
+    r = requests.post(
+        f"{DRIVE_UPLOAD}?uploadType=multipart&fields=id,webViewLink&supportsAllDrives=true",
+        headers={**_headers(), "Content-Type": "multipart/related; boundary=BOUNDARY"},
+        data=body,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def doc_replace(file_id, markdown):
+    """Replace a Google Doc's entire content from markdown."""
+    r = requests.patch(
+        f"{DRIVE_UPLOAD}/{file_id}?uploadType=media&supportsAllDrives=true",
+        headers={**_headers(), "Content-Type": "text/markdown"},
+        data=markdown.encode(),
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def doc_read(file_id):
+    """Export a Google Doc's current content as markdown (for append-then-replace updates)."""
+    r = requests.get(
+        f"{DRIVE_API}/{file_id}/export?mimeType=text/markdown",
+        headers=_headers(),
+    )
+    r.raise_for_status()
+    return r.text
+
+
 def main():
     args = sys.argv[1:]
     sheet_id = SHEET_ID
@@ -97,6 +144,15 @@ def main():
         col_a = get_values(sheet_id, f"{TAB}!A:A")
         # data starts at row 3; col_a is trimmed to the last non-empty cell
         print(max(len(col_a) + 1, 3))
+    elif cmd == "doc-create":
+        # doc-create <folderId> <title>   (markdown on stdin)
+        print(json.dumps(doc_create(rest[0], rest[1], sys.stdin.read())))
+    elif cmd == "doc-replace":
+        # doc-replace <fileId>            (markdown on stdin)
+        print(json.dumps(doc_replace(rest[0], sys.stdin.read())))
+    elif cmd == "doc-read":
+        # doc-read <fileId>               (prints doc content as markdown)
+        print(doc_read(rest[0]))
     elif cmd == "max-id":
         col_a = get_values(sheet_id, f"{TAB}!A:A")
         ids = [r[0] for r in col_a if r and r[0].startswith("L-")]
