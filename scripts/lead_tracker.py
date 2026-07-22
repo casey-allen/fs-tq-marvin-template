@@ -117,6 +117,7 @@ def doc_read(file_id):
         timeout=30,
     )
     r.raise_for_status()
+    r.encoding = "utf-8"  # Drive's markdown export omits charset; requests would guess latin-1 and mojibake the text
     return r.text
 
 
