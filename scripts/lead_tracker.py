@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Thin Google Sheets CLI for the Master Lead Tracker — used by cloud routines
-where the local google-sheets MCP is unavailable.
+"""Thin Google Sheets CLI for the Master Lead Tracker.
+
+LOCAL MIRROR — the canonical copy lives in github.com/casey-allen/bd-lead-pipeline
+(cloud routines clone that repo). Keep edits in sync or edit there and copy here.
 
 Auth: a Google service-account key, from one of
   GSHEETS_SA_JSON  — the key JSON itself (preferred for cloud env secrets)

@@ -1,0 +1,77 @@
+
+
+[Date]
+By email to: [Name], [email]
+[Company Name]
+[Address]
+
+Ref: LETTER OF INTENT (“LOI”) - PURCHASE AND SALE OF LAND
+
+Dear Seller,
+
+This LOI covers the purchase and sale of land described below and in Exhibit A:
+
+=====TABLE START=====
+Definitions
+Property | [Address]
+Address and Size of Property | [____] acres
+Committed Utility Power | [MW]
+Power Load Ramp | The Power Load Ramp for delivering Committed Utility Power will be [description]
+Power Price | $___ per MW of Committed Utility Power
+Utility | [Name of utility company]
+Interconnection Agreement | Interconnection agreement or similar agreement between the Utility and Seller, dated _______]
+Purchaser | Fluidstack Inc. or its affiliate
+Seller | [Name]
+Exclusivity Period | ____ days from the execution of this LOI
+Deposit | [$____] [DELETE ROW IF NOT USED]
+Purchase Price | [$____]
+Diligence Period | [160 Days from the effective date of the Purchase Agreement]
+Payment Schedule | The Payments will be made per the “Payment Schedule” in Exhibit B.
+NDA | This LOI, and all negotiations between the parties are subject to the nondisclosure agreement signed between Purchaser and Seller, dated _______.
+=====TABLE END=====
+
+Purchaser and Seller will negotiate in good faith toward a purchase agreement and related documents (“Purchase Agreement"). This LOI reflects the parties’ understanding of the terms for that Purchase Agreement. 
+=====TABLE START=====
+THE TRANSACTION | The transaction structure contemplated by this LOI will be the purchase and sale of the Property (the “Transaction”). The conclusion of the Transaction will be subject to the fulfillment of all Closing Conditions outlined below.
+EXCLUSIVITY | During the Exclusivity Period, Purchaser and Seller will negotiate exclusively and diligently in good faith for the Transaction with the intent to reach a mutually satisfactory Purchase Agreement.  Neither Seller nor its representatives, directors, officers, or agents will, directly or indirectly, solicit, pursue, initiate, encourage, discuss or participate in any discussions or negotiations with any third party regarding the Transaction, the sale, lease, or other transaction regarding the Property or Interconnection Agreement.  Seller will not allow any third party other than Purchaser or Purchaser’s representatives to inspect, test or obtain a survey or valuation of all or any portion of the Property.  At the end of the Exclusivity Period, it will automatically extend for an additional sixty (60) days if the parties are negotiating in good faith, unless a party gives the other fourteen (14) days’ prior written notice of its intent to terminate prior to expiration of the initial Exclusivity Period. Seller will promptly notify Purchaser of any unsolicited proposal or inquiry regarding the sale, lease, or other transaction regarding the Property or Interconnection Agreement during the Exclusivity Period, including the revival of discussions that originated prior to commencement of the Exclusivity Period.
+PURCHASE AGREEMENT: | Purchaser will, within thirty (30) days from the later of (i)  Execution Date of this LOI, or (ii) [the date that Seller has obtained [a binding Electric Service Agreement (or equivalent) from the Utility confirming the Committed Utility Power and Power Load Ramp, and written confirmation from the Utility that the Interconnection Agreement is assignable to Purchaser / all zoning or land-use entitlements necessary for datacenter development on the Property, prepare the initial draft of the Purchase Agreement, including an assignment of the contract for the Committed Utility Power, on a commercially reasonable form. The “Execution Date” of this LOI shall be the date that the last party executes this LOI.
+DEPOSIT | Within fifteen (15) business days following the full execution of the Purchase Agreement, Purchaser will deliver the Deposit to a third-party escrow agent selected by Purchaser (the “Escrow Agent”) to be held in an interest-bearing account and distributed in accordance with the terms of an escrow agent that will be attached as an exhibit to the Purchase Agreement.  The Deposit will be applied to the cash amounts owed to Seller at closing of the purchase of the Property (the “Closing”). The Deposit will be fully refundable to Purchaser (i) as described in the Due Diligence section below, (ii)  if Purchaser terminates the Purchase Agreement on or before the expiration date of the Due Diligence Period, or (iii) after the expiration of the Diligence Period if Seller does not fulfill all of the Closing Conditions prior to Closing.    Subject to the foregoing, the Deposit becomes non-refundable upon expiration of the Diligence Period. [DELETE IF NOT USED]
+REAL ESTATE PURCHASE PRICE: | The expected Purchase Price for the Property is based on the Committed Utility Power and Power Price (to be determined by a binding Electric Service Agreement (“ESA”) or similar document provided by the relevant utility with a firm load ramp).    If and to the extent that the power available at the Property (i) is less than the Committed Utility Power, or (ii) the Power Load Ramp is longer from that described above, in each case, the Purchase Price will be reduced in an amount proportional to such reduced power availability or delay, as applicable, to be further outlined in the Purchase Agreement.
+PAYMENT SCHEDULE: | The Purchase Price will be based on the Committed Utility Power and Power Price and will be paid according to the Payment Schedule.   The parties will discuss a security or other protection for Purchaser if the Committed Utility Power is delayed.
+DUE DILIGENCE: | Purchaser will have the Diligence Period to investigate the Property. Within 5 days after the Execution Date, Seller will deliver to Purchaser all records in Seller's possession relating to the Property, including environmental reports, geotechnical studies, zoning and engineering reports, surveys, title reports, tax statements, and information on existing easements or rights-of-way that may need to be terminated for Purchaser's development ("Identified Conditions").  Purchaser's due diligence will include (and Seller will support) confirming a viable path to clean, marketable, and insurable title sufficient for datacenter development, including the ability to cure or terminate any Identified Conditions.  Seller will provide Purchaser and its representatives reasonable access to the Property for inspections, testing, and surveys. The Purchase Agreement will automatically terminate at the end of the Diligence Period unless Purchaser delivers written notice to Seller confirming its election to proceed. If the Purchase Agreement terminates under this provision, the Escrow Agent must return the Deposit to Purchaser within 5 business days.
+TITLE AND SURVEY: | Within 10 days after full execution of the Purchase Agreement, Seller will obtain, at Seller's expense, a title commitment from a national title company selected by Purchaser. Seller will deliver any existing ALTA survey in its possession; Purchaser may obtain a new or updated ALTA survey at its own expense. Seller must convey fee simple, marketable, and insurable title by warranty deed, free of all liens and encumbrances except those approved by Purchaser ("Permitted Encumbrances"). Purchaser may object to title or survey matters through the end of the Diligence Period.  If Seller does not cure objected matters, Purchaser may terminate the Purchase Agreement.  Seller must satisfy all monetary liens at or before Closing. Issuance of an owner's title policy (subject only to Permitted Encumbrances) is at Seller's expense and is a condition to Closing.
+CLOSING; CLOSING DATE: | Closing will be the later of (i) ______  (xx) days following the expiration of the Diligence Period, or (ii) ______ days following execution of the Purchase Agreement, in each case subject to the fulfillment of all Closing Conditions.
+CLOSING CONDITIONS: | In addition to other customary conditions to close, Purchaser’s obligation to purchase the Property will include the following closing conditions (collectively “Closing Conditions”): 	 	 	Seller will obtain fee-simple, marketable, and insurable title to the Property before the Closing Date.  		Seller will grant to Purchaser all easements and approvals (and all other applicable rights and documents, if any) under Seller’s direct or indirect control, as required for Purchaser’s development of the Property. 		The Property will be free from person, goods, or encumbrances of any kind, including third party rights. 		The Property will be free and clear of any environmental contamination or hazardous materials. 	All representations and warranties of Seller in the Purchase Agreement will remain true and accurate. 	Seller delivers written confirmation from the Utility that the Interconnection Agreement may be assigned to Purchaser or its designee for datacenter use, for the full Committed Utility Power. The Interconnection Agreement will be assigned to Purchaser at Closing. 	Purchaser executes a binding ESA or equivalent agreement with the Utility confirming delivery of the full Committed Utility Power, with a Power Load Ramp consistent with this LOI, firm energization dates to the on-site substation, and security collateral and minimum capacity payments acceptable to Purchaser.  	Purchaser and Seller has obtained all governmental and regulatory permits, agreements, approvals, consents, and entitlements necessary for a data center supporting the Committed Utility Power on the Property (collectively, the "Permits"). Such Permits may include, without limitation, zoning approvals, site plan approvals, building permits, environmental clearances, utility connections, and any special use or conditional use permits required for Purchaser’s development.   	Seller agrees to abandon or terminate, or cause its owners, directors of affiliates to abandon or terminate, at Closing, all Identified Conditions for which Seller, its owners, directors or affiliates can abandon or terminate. Seller will assist and cooperate with Purchaser at Purchaser’s request in obtaining any third-party easements, approvals and crossing agreements, as required for Purchaser’s development of the Property.	  	If the Closing Conditions are not met by the Closing Date, Purchaser can: (i) terminate the Purchase Agreement; (ii) extend Closing up to thirty (30) days after the scheduled Closing Date, or (iii) waive any Closing Conditions and proceed to Closing. If the Closing Conditions are not met within thirty (30) days after the scheduled Closing Date, Purchaser can elect to: (i) terminate the Purchase Agreement, (ii) waive any unmet Closing Conditions and proceed to Closing. The foregoing remedies will not be exclusive but will be cumulative and in addition to all other remedies available. 	 	The Purchase Price will be the total aggregate amount that will be paid to Seller under this LOI and Purchase Agreement. Any additional sums required in connection with the same, including but not limited to transmission upgrade payments, letters of credit to the utility, or land option payments will be paid by Seller, or if paid by Purchaser, will be deducted from the Purchase Price.
+ENCUMBRANCES: | After execution of this LOI, Seller will not grant, record, join into, or consent to, any easements, rights-of-way, other encumbrances, or agreements affecting or over or through the Property or enter into any agreements, proffers, or other commitments which would affect the Property following Closing without obtaining the prior written consent of Purchaser, which consent may be withheld by Purchaser in its sole and absolute discretion.
+EXPENSES: | Each party will bear all of its own expenses (including the expenses of its attorneys, advisors, accountants, consultants or other experts or representatives retained by them) incurred in connection with the negotiation and execution of this LOI, the negotiation and any consummation of the Purchase Agreement, any other fees described in the Purchase Agreement, and related matters.
+CONFIDENTIALITY: | The contents of this LOI and the Transaction will be governed by the NDA.
+=====TABLE END=====
+
+The LOI is not a binding or enforceable agreement between Seller or Purchaser, except for the good faith, Exclusivity, Expenses and Confidentiality provisions above. Each party can decline to enter into the Purchase Agreement without liability, except for breach of the Exclusivity, Expenses and Confidentiality provisions above. 
+
+This Letter will be governed by the laws of the state of New York (USA), without regard to conflicts of laws principles. The parties will refer any dispute or claim arising under this Letter for resolution by courts in New York, New York. 
+
+This LOI is only effective if signed by both parties on or before 5:00 pm Eastern Standard Time, ten (10) business days from the date of this LOI (“Execution Deadline”). If this LOI is not executed by both Seller and Purchaser by the Execution Deadline, this LOI terminates automatically.
+
+
+
+
+Acknowledged and agreed
+
+PURCHASER: ________________			SELLER:  _________________
+					
+
+By: ______________________			By: ______________________	
+
+
+Name: ___________________			Name: ___________________
+Title: ____________________			Title: ____________________	
+Date: ____________________			Date: ____________________
+
+Exhibit A
+Description of Land
+
+[Attach description of land and any applicable maps or images]
+330735974 v4
+=====TABLE START=====
+=====TABLE END=====

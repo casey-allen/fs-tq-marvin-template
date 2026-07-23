@@ -53,6 +53,14 @@ Check for recent session logs to build context:
 - If no today file: read the most recent 3 days of session logs from `sessions/` for continuity.
 - Identify any open threads or unfinished work from recent sessions.
 
+### 5.5. Load Kaiser Platform Data
+
+If `kaiser.enabled` is true in `config.yaml`, pull the logged-in user's data from the Kaiser site-selection platform (MCP):
+- Call `get_home` to get the user's DRI sites, action items, RFIs, risks, and stale/shifted milestones.
+- Surface anything time-sensitive: open DRI action items, pending approvals, stale milestones, and sites whose `deal_status` changed recently.
+- Cross-reference `kaiser.watched_sites` with the monitored Slack channels so deal status lines up with channel chatter.
+- Do not block the briefing if the platform is unreachable — just note it.
+
 ### 6. Integration Health Check
 If integrations are configured (check config.yaml and CLAUDE.md):
 - Note which integrations are available
@@ -73,6 +81,9 @@ Good {morning/afternoon/evening}. It's {DAY}, {DATE}.
 
 **CALENDAR**
 - {Today's events if calendar integration available, otherwise skip this section}
+
+**DEALS / PIPELINE (Kaiser)**
+- {If kaiser.enabled: open DRI action items, RFIs, pending approvals, stale milestones, and recent deal-status changes. Tie to monitored Slack channels where relevant. Otherwise skip this section.}
 
 **DAILY NOTE**
 - {Tagged items from today's Obsidian note: ACTION items, BLOCKED items, carry-forwards}

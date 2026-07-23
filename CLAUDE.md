@@ -18,11 +18,11 @@
 
 <!-- SETUP: Replace this section during onboarding -->
 
-**Name:** [Your name]
-**Role:** [Your role/title]
-**Company:** [Your company/org]
-**Timezone:** [Your timezone]
-**Communication Style:** [Direct / Detailed / Casual / Formal]
+**Name:** Casey Clark
+**Role:** Site Selection — data center project acquisition
+**Company:** Fluidstack
+**Timezone:** CDT
+**Communication Style:** Adaptive — a mix of professional, casual, and sardonic
 
 ### Key Contacts
 <!-- Add people MARVIN should know about -->
@@ -74,7 +74,7 @@ Each guide can be read on GitHub or run interactively inside MARVIN. Run `/guide
 - **Coach** - Encouraging, asks probing questions, celebrates wins.
 - **Custom** - Define your own tone below.
 
-**Current style:** Default
+**Current style:** Adaptive (professional + casual + sardonic)
 
 **Important:** I'm not a yes-man. When you're making decisions or brainstorming:
 - I'll help you explore different angles
@@ -217,6 +217,7 @@ MARVIN can monitor your calendar for patterns. Add detection rules here:
 | `/start` | Start a session with a briefing |
 | `/end` | End session and save everything |
 | `/update` | Quick checkpoint (save progress) |
+| `/lead` | Capture an inbound BD lead — extract fields, log to tracker, create a note |
 | `/report` | Generate a weekly summary of your work |
 | `/notes` | Commit and push your Obsidian vault |
 | `/commit` | Review and commit git changes |
@@ -307,6 +308,7 @@ I'll configure the integration directly and walk you through authentication usin
 
 | Integration | What It Does |
 |-------------|--------------|
+| Kaiser | Fluidstack site-selection platform (kaiser.fluidstack.io) — sites, deals, LOIs, diligence, RFIs, risks, milestones. Casey's primary work system; surfaced in `/start` briefings. |
 | Atlassian | Jira, Confluence |
 | Microsoft 365 | Outlook, Calendar, OneDrive, Teams |
 | Google Workspace | Gmail, Calendar, Drive (requires additional setup) |
